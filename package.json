@@ -56,7 +56,7 @@
   "dependencies": {
     "antd": "^3.25.2",
     "moment": "^2.24.0",
-    "superagent": "2.3.0"
+    "superagent": "5.0.2"
   },
   "scripts": {
     "build": "webpack --progress --colors --display-error-details",

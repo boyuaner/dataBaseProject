@@ -23,15 +23,22 @@ class NormalLoginForm extends React.Component {
           body: JSON.stringify(values), 
         }).then( 
           response => {
-              if(response.status === 200){
-                  alert("登录成功！");
-                  console.log('Success:', response);
+            response.json().then(data =>{
+                console.log(data);
+                if(data.code === 0){
+                  alert("登录成功!");
+                }else {
+                  alert("登录失败！请检查用户名或密码！")
+                }
               }
+            )
           }
         )
       .catch(
-        alert("登录失败"),
-        error => console.error('Error:', error)
+        error =>{
+          alert("登录异常");
+          console.error('Error:', error)
+        } 
       );
       }
     });

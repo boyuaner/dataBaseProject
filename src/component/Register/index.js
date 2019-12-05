@@ -8,13 +8,13 @@ import api from "../../api"
 const { Title } = Typography;
 
 
-class NormalLoginForm extends React.Component {
+class Login extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
-        let url = api.host + api.login;
+        let url = api.host + api.register;
         fetch( url ,{
           headers: new Headers({
             'Content-Type': 'application/json'
@@ -22,17 +22,21 @@ class NormalLoginForm extends React.Component {
           method: 'POST', // or 'PUT'
           body: JSON.stringify(values), 
         }).then( 
-          response => {
-              if(response.status === 200){
-                  alert("登录成功！");
-                  console.log('Success:', response);
-              }
+            response => {
+                if(response.status === 200){
+                    alert("注册成功！");
+                    this.props.history.push('/main');
+                    console.log('Success:', response);
+                }
+            }
+          )
+        .catch(
+        //   alert("注册失败"),
+          error => {
+              console.error('Error:', error);
+              this.props.history.push('/main');
           }
-        )
-      .catch(
-        alert("登录失败"),
-        error => console.error('Error:', error)
-      );
+        );
       }
     });
   };
@@ -75,26 +79,39 @@ class NormalLoginForm extends React.Component {
           </Col>
           </Form.Item>
           <Form.Item>
-          <Col span={4} offset={10}>
-              {/* {
-                getFieldDecorator('remember', {
-                valuePropName: 'checked',
-                initialValue: true,
-              })()} */}
-              <Checkbox>Remember me</Checkbox>
-              <Link to="/forget">
-                Forgot password? <br/> 
-              </Link>
-          </Col>
-            
             <Col span={4} offset={10}>
-              <Button size="large" type="primary" htmlType="submit" className="login-form-button">
-                Log in
-              </Button>    
-                <br/>
+                {getFieldDecorator('repeatPassword', {
+                    rules: [{ required: true, message: 'Repeat your Password!' }],
+                })(
+                    <Input
+                    prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    type="password"
+                    placeholder="repeatPassword"
+                    />,
+                )}
             </Col>
-            
-            <Col span={3} offset={10}>Or  <Link to="/register">register now!</Link></Col>
+          </Form.Item>
+          <Form.Item>
+          <Col span={4} offset={10}>
+            {getFieldDecorator('phoneNum', {
+                rules: [{ required: true, message: 'Input your phone number' }],
+              })(
+                <Input
+                  prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  placeholder="phoneNumber"
+                />,
+              )}
+          </Col>
+          </Form.Item>
+          <Form.Item>
+                <Col span={4} offset={10}>
+                    <Button size="large" type="primary" htmlType="submit" className="login-form-button">
+                    Register
+                    </Button>    
+                    <br/>
+                    <Link to="/login">Have an account? Login!</Link>
+                </Col>
+                
             </Form.Item>
           
         </Row>
@@ -103,5 +120,5 @@ class NormalLoginForm extends React.Component {
   }
 }
 
-const WrappedNormalLoginForm = Form.create({ name: 'normal_login' })(NormalLoginForm);
+const WrappedNormalLoginForm = Form.create({ name: 'normal_login' })(Login);
 export default WrappedNormalLoginForm;

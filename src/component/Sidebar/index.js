@@ -1,5 +1,5 @@
 import React from "react"
-import Link from "react-router-dom"
+import {Link} from "react-router-dom"
 import { Layout, Menu, Breadcrumb,Row,Col,Button,Icon } from 'antd';
 import { Typography } from 'antd';
 import "../../App.css"
@@ -45,7 +45,7 @@ class MySidebar extends React.Component {
               defaultSelectedKeys={['1']}
               style={{ lineHeight: '64px' }}
             >
-              <Menu.Item key="1">活动列表</Menu.Item>
+              <Menu.Item key="1"><Link>活动列表</Link></Menu.Item>
               <Menu.Item key="2">我的活动</Menu.Item>
               <Menu.Item key="3">排行</Menu.Item>
             </Menu>
@@ -66,13 +66,25 @@ class MySidebar extends React.Component {
               }
             >
               <Menu.ItemGroup title="Normal">
-                <Menu.Item key="setting:1"><Icon type="user" />我的资料</Menu.Item>
+                <Menu.Item key="setting:1"><Icon type="user" />
+                <Link to="/UserInfo">
+                我的资料
+                </Link>
+                </Menu.Item>
               </Menu.ItemGroup>
               <Menu.ItemGroup title="Manage">
-                <Menu.Item key="setting:2"><Icon type="fire" />管理活动</Menu.Item>
+                <Menu.Item key="setting:2"><Icon type="fire" />
+                <Link to="/Manage">
+                管理活动
+                </Link>
+                </Menu.Item>
               </Menu.ItemGroup>
               <Menu.ItemGroup title="Exit">
-                <Menu.Item key="setting:3"><Icon type="export" />退出</Menu.Item>
+                <Menu.Item key="setting:3"><Icon type="export" />
+                <Link to="/logout">
+                退出
+                </Link>
+                </Menu.Item>
               </Menu.ItemGroup>
             </SubMenu>
               </Menu>

@@ -9,8 +9,6 @@ class MyModal extends React.Component {
             visible: false,
         };
     }
-    
-
   showModal = () => {
     this.setState({
       visible: true,

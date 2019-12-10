@@ -14,7 +14,8 @@ class MyContent extends React.Component {
                     <Breadcrumb.Item>List</Breadcrumb.Item>
                     <Breadcrumb.Item>App</Breadcrumb.Item>
                 </Breadcrumb>
-                <ActivitiList/>
+                {/* <ActivitiList/> */}
+                {this.props.children}
             </Content>
         );
     }

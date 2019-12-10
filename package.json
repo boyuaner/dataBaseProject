@@ -5,6 +5,7 @@
   "dependencies": {
     "antd": "^3.23.6",
     "history": "^4.10.1",
+    "js-md5": "^0.7.3",
     "react": "^16.10.2",
     "react-cookie": "^4.0.1",
     "react-dom": "^16.10.2",

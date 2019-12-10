@@ -2,6 +2,7 @@ import { message,Tag,Table,Popconfirm ,Col,Divider,Card,Row} from 'antd';
 import React from 'react';
 import MyModal from '../Modal';
 import api from '../../api';
+import { instanceOf } from 'prop-types';
 import { withCookies, Cookies } from 'react-cookie';
 class ActivitiList extends React.Component {
   static propTypes = {
@@ -41,18 +42,17 @@ class ActivitiList extends React.Component {
           Creator:'kun'
         },
       ],
-      stuId : Cookie.load("stuId"),
+      stuId : cookies ? cookies.load("stuId") : "201805130168",
       actList:[],
     }
   }
   componentDidMount(){
-    const url = api.host + api.actDetail;
+    const url = api.host + api.actDetail + "?stuId=" +this.state.stuId;
     fetch(url, {
         headers:new Headers({
         'Content-Type': 'application/json',
           }),
-          method: 'POST', // or 'PUT'
-          body: JSON.stringify({stuId:this.state.stdId}),
+          method: 'GET', // or 'PUT'
         }).then(
           res=>{
             res.json().then(data=>{
@@ -82,7 +82,7 @@ class ActivitiList extends React.Component {
               hoverable={true}
               extra={
                 <div>
-                  <MyModal text="Detail" id={card.proj_id}/>
+                  <MyModal okText="参加" cancelText="取消" text="Detail" id={card.proj_id}/>
                 </div>
               }
               >

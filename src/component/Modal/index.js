@@ -41,6 +41,8 @@ class MyModal extends React.Component {
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
+          okText={this.props.okText}
+          cancelText={this.props.cancelText}
         >
           <Article id={this.state.id}/>
         </Modal>

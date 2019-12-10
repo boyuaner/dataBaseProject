@@ -5,7 +5,7 @@ import "../../App.css"
 const { Title, Paragraph, Text } = Typography;
 const { Content } = Layout;
 const data = [];
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 32; i++) {
   data.push({
     key: i.toString(),
     name: `Edrward ${i}`,
@@ -112,7 +112,7 @@ class MList extends React.Component{
                 </span>
               ) : (
                 <span>
-                  <MyModal text="Detail"/>
+                  <MyModal text="Detail" />
                   <Col span={1}><Divider type="vertical" /></Col>
                   <MyModal text="More"/>
                 </span>

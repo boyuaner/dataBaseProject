@@ -7,6 +7,7 @@ class MyModal extends React.Component {
         super(props);
         this.state = { 
             visible: false,
+            id:this.props.id,
         };
     }
   showModal = () => {
@@ -41,7 +42,7 @@ class MyModal extends React.Component {
           onOk={this.handleOk}
           onCancel={this.handleCancel}
         >
-          <Article/>
+          <Article id={this.state.id}/>
         </Modal>
       </Col>
     );

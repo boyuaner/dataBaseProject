@@ -1,9 +1,15 @@
-import { Tag,Table,Popconfirm ,Col,Divider,Card,Row} from 'antd';
+import { message,Tag,Table,Popconfirm ,Col,Divider,Card,Row} from 'antd';
 import React from 'react';
 import MyModal from '../Modal';
+import api from '../../api';
+import { withCookies, Cookies } from 'react-cookie';
 class ActivitiList extends React.Component {
+  static propTypes = {
+    cookies: instanceOf(Cookies).isRequired
+  };
   constructor(props) {
     super(props);
+    const {cookies} = this.props;
     this.state = {
       cardList: [
         {
@@ -35,7 +41,33 @@ class ActivitiList extends React.Component {
           Creator:'kun'
         },
       ],
+      stuId : Cookie.load("stuId"),
+      actList:[],
     }
+  }
+  componentDidMount(){
+    const url = api.host + api.actDetail;
+    fetch(url, {
+        headers:new Headers({
+        'Content-Type': 'application/json',
+          }),
+          method: 'POST', // or 'PUT'
+          body: JSON.stringify({stuId:this.state.stdId}),
+        }).then(
+          res=>{
+            res.json().then(data=>{
+              if(data.code === 0){
+                this.setState({
+                  actList:data.actList,
+                })
+              }
+            })
+          }
+        ).catch(
+            err=>{
+                message.warning("网络连接异常，信息获取失败！");
+            }
+        );
   }
   render() {
     return (
@@ -50,7 +82,7 @@ class ActivitiList extends React.Component {
               hoverable={true}
               extra={
                 <div>
-                  <MyModal text="Detail"/>
+                  <MyModal text="Detail" id={card.proj_id}/>
                 </div>
               }
               >

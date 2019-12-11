@@ -1,5 +1,5 @@
 import React from "react"
-import { Typography, Layout, Breadcrumb ,Table, Input, InputNumber, Popconfirm, Form, Divider,Col } from 'antd';
+import { Typography, Layout, Breadcrumb ,Table, Input, InputNumber, Popconfirm, Form, Divider,Col,Row} from 'antd';
 import MyModal from "../Modal";
 import "../../App.css"
 const { Title, Paragraph, Text } = Typography;
@@ -94,6 +94,7 @@ class MList extends React.Component{
             render: (text, record) => {
               const { editingKey } = this.state;
               const editable = this.isEditing(record);
+              
               return editable ? (
                 <span>
                   <EditableContext.Consumer>
@@ -112,9 +113,9 @@ class MList extends React.Component{
                 </span>
               ) : (
                 <span>
-                  <MyModal text="Detail" />
-                  <Col span={1}><Divider type="vertical" /></Col>
-                  <MyModal text="More"/>
+                  <MyModal type="form" text="Detail" />
+                  {/* <Col span={1}><Divider type="vertical" /></Col>
+                  <MyModal text="More"/> */}
                 </span>
               );
             },

@@ -1,4 +1,4 @@
-import { message,Tag,Table,Popconfirm ,Col,Divider,Card,Row} from 'antd';
+import { message,Tag,Table,Popconfirm ,Col,Divider,Card,Row,Button} from 'antd';
 import React from 'react';
 import MyModal from '../Modal';
 import api from '../../api';
@@ -76,25 +76,47 @@ class ActivitiList extends React.Component {
           this.state.cardList.map(card => {
             return (
               <Card 
-              style={{margin:'10px'}}
+              // style={{margin:'10px'}}
               title={card.Title}
               key={card.proj_id}
               hoverable={true}
+              // loading={true}
               extra={
                 <div>
-                  <MyModal okText="参加" cancelText="取消" text="Detail" id={card.proj_id}/>
+                  {/* <MyModal 
+                  type="article" 
+                  okText="参加" 
+                  cancelText="取消" 
+                  text="Detail" 
+                  id={card.proj_id}
+                  /> */}
+                  <Button type="primary" >参加活动</Button>
                 </div>
               }
               >
-                <div><strong>
-                  <Tag color="#87d068">
-                    创建者:{card.Creator}
-                  </Tag>
-                  <Tag color="#f50">
-                    结束时间:{card.Endtime}
-                  </Tag>
-                  </strong>
+                <div>
+                  <Row>
+                    <Col span={3}>
+                    <strong>
+                    <Tag color="#87d068">
+                      创建者:{card.Creator}
+                    </Tag>
+                    <Tag color="#f50">
+                      结束时间:{card.Endtime}
+                    </Tag>
+                    </strong>
+                    </Col>
+                  
+                  <MyModal 
+                  type="article" 
+                  okText="参加" 
+                  cancelText="取消" 
+                  text="Detail" 
+                  id={card.proj_id}
+                  />
+                  </Row>
                 </div>
+                
               </Card>
             );
           })

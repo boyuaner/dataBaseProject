@@ -3,4 +3,5 @@ module.exports = {
     login : "/login",
     register : "/register",
     actDetail : "/actDetail",
+    upload:"/upload",
 }

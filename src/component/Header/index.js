@@ -48,7 +48,7 @@ class MySidebar extends React.Component {
             >
               <Menu.Item key="1"><Link to="/activitiList">活动列表</Link></Menu.Item>
               <Menu.Item key="2"><Link to="/myActivitiList">我的活动</Link></Menu.Item>
-              <Menu.Item key="3"><Link to="/activitiList">排行</Link></Menu.Item>
+              <Menu.Item key="3"><Link to="/rank">排行</Link></Menu.Item>
             </Menu>
             </Col>
               

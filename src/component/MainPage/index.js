@@ -6,6 +6,7 @@ import UserInfo from '../UserInfo'
 import ActivitiList from '../ActivitiList'
 import MyActivitiList from '../MyActivitiList'
 import ManageActList from '../ManageActList'
+import Rank from '../Rank'
 import { Layout } from "antd";
 import "../../App.css"
 import { createBrowserHistory } from 'history'
@@ -24,7 +25,7 @@ class MainPage extends React.Component{
                         <Route path="/myActivitiList" component={MyActivitiList} />
                         <Route path="/userInfo" component={UserInfo} />
                         <Route path="/manageAct" component={ManageActList} />
-                        {/* <Route path="/rank" component={Rank} /> */}
+                        <Route path="/rank" component={Rank} />
                     </Switch>
                 </MyContent>
                 {/* <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer> */}

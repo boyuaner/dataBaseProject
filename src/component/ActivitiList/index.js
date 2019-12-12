@@ -4,6 +4,7 @@ import MyModal from '../Modal';
 import api from '../../api';
 import { instanceOf } from 'prop-types';
 import { withCookies, Cookies } from 'react-cookie';
+import moment from 'moment';
 class ActivitiList extends React.Component {
   static propTypes = {
     cookies: instanceOf(Cookies).isRequired
@@ -47,7 +48,7 @@ class ActivitiList extends React.Component {
     }
   }
   componentDidMount(){
-    const url = api.host + api.actDetail + "?stuId=" +this.state.stuId;
+    const url = api.host + api.actList + "?stuId=" +this.state.stuId;
     fetch(url, {
         headers:new Headers({
         'Content-Type': 'application/json',
@@ -57,11 +58,12 @@ class ActivitiList extends React.Component {
           res=>{
             res.json().then(data=>{
               if(data.code === 0){
+                // console.log(data.obj.actList);
                 this.setState({
-                  actList:data.actList,
+                  actList:data.obj.actList,
                 })
               }
-            })
+            });
           }
         ).catch(
             err=>{
@@ -73,7 +75,7 @@ class ActivitiList extends React.Component {
     return (
       <div>
         {
-          this.state.cardList.map(card => {
+          this.state.actList.map(card => {
             return (
               <Card 
               // style={{margin:'10px'}}
@@ -83,37 +85,29 @@ class ActivitiList extends React.Component {
               // loading={true}
               extra={
                 <div>
-                  {/* <MyModal 
+                  <MyModal 
                   type="article" 
-                  okText="参加" 
+                  // okText="参加" 
                   cancelText="取消" 
                   text="Detail" 
                   id={card.proj_id}
-                  /> */}
-                  <Button type="primary" >参加活动</Button>
+                  />
                 </div>
               }
               >
                 <div>
                   <Row>
-                    <Col span={3}>
+                    <Col span={23}>
                     <strong>
                     <Tag color="#87d068">
                       创建者:{card.Creator}
                     </Tag>
                     <Tag color="#f50">
-                      结束时间:{card.Endtime}
+                      结束时间:{moment(card.Endtime).format('YYYY-MM-DD hh:mm:ss')}
                     </Tag>
                     </strong>
                     </Col>
-                  
-                  <MyModal 
-                  type="article" 
-                  okText="参加" 
-                  cancelText="取消" 
-                  text="Detail" 
-                  id={card.proj_id}
-                  />
+                    {/* <Col span={1}><Button type="primary" >参加活动</Button></Col> */}
                   </Row>
                 </div>
                 

@@ -3,10 +3,12 @@ import {Link} from "react-router-dom"
 import { Layout, Menu, Breadcrumb,Row,Col,Button,Icon } from 'antd';
 import { Typography } from 'antd';
 import "../../App.css"
+import globalContext from '../globalContext'
 const { Title } = Typography;
 const { Header, Content, Footer } = Layout;
 const {SubMenu} = Menu;
 class MySidebar extends React.Component {
+  static contextType = globalContext;
     state = {
       collapsed: false,
       current: 'mail',
@@ -27,6 +29,35 @@ class MySidebar extends React.Component {
     };
   
     render() {
+      const MenuUpRight = (
+        <SubMenu
+              title={
+                <span className="submenu-title-wrapper">
+                  <Icon type="setting" />
+                  {this.context.userId}
+                </span>
+              }
+            >
+        <Menu.ItemGroup title="Info">
+          <Menu.Item key="setting:1"><Icon type="user" />
+          我的资料
+          <Link to="/userInfo"/>
+          </Menu.Item>
+        </Menu.ItemGroup>
+        {(this.context.manager === true) ? (<Menu.ItemGroup title="Manage">
+          <Menu.Item key="setting:2"><Icon type="fire" />
+          管理活动
+          <Link to="/manageAct"/>
+          </Menu.Item>
+        </Menu.ItemGroup>) : null }
+        <Menu.ItemGroup title="Exit">
+          <Menu.Item key="setting:3"><Icon type="export" />
+          退出
+          <Link to="/logout"/>
+          </Menu.Item>
+          </Menu.ItemGroup>
+          </SubMenu>
+      );
       return (
 
           <Header style={{ position: 'fixed', zIndex: 1, width: '100%' ,background:'white'}}>
@@ -59,33 +90,7 @@ class MySidebar extends React.Component {
               defaultSelectedKeys={['1']}
               style={{ lineHeight: '64px' }}
               >
-              <SubMenu
-              title={
-                <span className="submenu-title-wrapper">
-                  <Icon type="setting" />
-                  UserName
-                </span>
-              }
-            >
-              <Menu.ItemGroup title="Info">
-                <Menu.Item key="setting:1"><Icon type="user" />
-                我的资料
-                <Link to="/userInfo"/>
-                </Menu.Item>
-              </Menu.ItemGroup>
-              <Menu.ItemGroup title="Manage">
-                <Menu.Item key="setting:2"><Icon type="fire" />
-                管理活动
-                <Link to="/manageAct"/>
-                </Menu.Item>
-              </Menu.ItemGroup>
-              <Menu.ItemGroup title="Exit">
-                <Menu.Item key="setting:3"><Icon type="export" />
-                退出
-                <Link to="/logout"/>
-                </Menu.Item>
-                </Menu.ItemGroup>
-                </SubMenu>
+              {MenuUpRight}
             </Menu>
             </Col>
            </Row>

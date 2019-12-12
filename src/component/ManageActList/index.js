@@ -1,7 +1,8 @@
 import React from "react"
 import { Typography, Layout, Breadcrumb ,Table, Input, InputNumber, Popconfirm, Form, Divider,Col,Row} from 'antd';
 import MyModal from "../Modal";
-import "../../App.css"
+import "../../App.css";
+
 const { Title, Paragraph, Text } = Typography;
 const { Content } = Layout;
 const data = [];
@@ -60,6 +61,7 @@ class EditableCell extends React.Component {
   }
 
 class MList extends React.Component{
+
     constructor(props) {
         super(props);
         this.state = { data, editingKey: '' };
@@ -176,7 +178,7 @@ class MList extends React.Component{
             }),
           };
         });
-    
+        
         return (
           <EditableContext.Provider value={this.props.form}>
             <Table
@@ -191,7 +193,7 @@ class MList extends React.Component{
               }}
             />
           </EditableContext.Provider>
-        );
+        )
       }
 }
 const ManageActList = Form.create()(MList);

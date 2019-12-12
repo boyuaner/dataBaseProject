@@ -3,5 +3,7 @@ module.exports = {
     login : "/login",
     register : "/register",
     actDetail : "/actDetail",
+    actList : "/actList",
     upload:"/upload",
+    userInfo: "/infoMe",
 }

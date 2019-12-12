@@ -17,30 +17,27 @@ class Article extends React.Component {
         }
     }
     componentDidMount(){
-        const url = api.host+api.actDetail;
-        const value = {
-            actId: this.props.id,
-        }
+        const url = api.host+api.actDetail+"?actId="+this.state.id;
         fetch(url,{
             headers:new Headers({
                 'Content-Type': 'application/json',
             }),
-            method: 'POST', // or 'PUT'
-            body: JSON.stringify(value),
+            method: 'GET', // or 'PUT'
         }).then(
             res => {
                 res.json().then(data=>{
                     if(data.code === 0){
                         this.setState({
-                            content:data.article,
-                            title:data.Title,
-                            type:data.Type,
-                            endTime:data.EndTime,
-                            creator:data.Creator,
-                            fileList:data.file,
-                            uploadDetail:data.upload,
-                        })
+                            content:data.obj.article,
+                            title:data.obj.Title,
+                            type:data.obj.Type,
+                            endTime:data.obj.EndTime,
+                            creator:data.obj.Creator,
+                            fileList:data.obj.file,
+                            uploadDetail:data.obj.upload,
+                        });
                     }
+
                 })
             }
         ).catch(

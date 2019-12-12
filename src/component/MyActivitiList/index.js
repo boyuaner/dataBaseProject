@@ -61,7 +61,7 @@ class MyActivitiList extends React.Component {
             res.json().then(data=>{
               if(data.code === 0){
                 this.setState({
-                  actList:data.actList,
+                  actList:data.obj.actList,
                 })
               }
             })

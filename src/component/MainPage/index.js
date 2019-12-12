@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../Header";
 import MyContent from "../Content";
-import {Route,Switch,Router} from "react-router-dom";
+import {Route,Switch,Router,Redirect} from "react-router-dom";
 import UserInfo from '../UserInfo'
 import ActivitiList from '../ActivitiList'
 import MyActivitiList from '../MyActivitiList'
@@ -10,13 +10,22 @@ import Rank from '../Rank'
 import { Layout } from "antd";
 import "../../App.css"
 import { createBrowserHistory } from 'history'
+import globalContext from '../globalContext'
 let history = createBrowserHistory();
 // {Footer} = Layout;
 class MainPage extends React.Component{
+    static contextType = globalContext;
+    requireAdmin(Layout, props) {
+        if (this.context.manager === false) {
+          return <Redirect to="/activitiList" />;
+        } else {
+          return <Layout {...props} />
+        }
+      }
     render(){
         return (
             <Router history={history}>
-                <Layout>            
+                <Layout>
                 <Header/>
                 <MyContent>
                     <Switch>
@@ -24,7 +33,7 @@ class MainPage extends React.Component{
                         <Route path="/activitiList" component={ActivitiList} />
                         <Route path="/myActivitiList" component={MyActivitiList} />
                         <Route path="/userInfo" component={UserInfo} />
-                        <Route path="/manageAct" component={ManageActList} />
+                        <Route path="/manageAct" component={props=>this.requireAdmin(ManageActList,props)} />
                         <Route path="/rank" component={Rank} />
                     </Switch>
                 </MyContent>

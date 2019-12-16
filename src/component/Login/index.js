@@ -6,6 +6,7 @@ import { Typography } from 'antd';
 import globalContext from "../globalContext";
 import "../../App.css"
 import api from "../../api"
+import '../../mock/mock';
 const { Title } = Typography;
 
 

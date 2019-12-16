@@ -14,7 +14,7 @@ export default class App extends React.Component {
     return (
       <CookiesProvider>
         <globalContext.Provider value={{
-          userId : "201805130176",
+          userId : "",
           userPhoneNum: "manage",
           manager:false,
         }}>

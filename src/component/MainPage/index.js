@@ -17,9 +17,11 @@ class MainPage extends React.Component{
     static contextType = globalContext;
     componentDidMount(){
         if(this.context.userId === ""){
+            
             this.props.history.push("/login");
         }else {
             // this.props.history.push("/activitiList")
+            console.log(this.context.userId);
         }
     }
     requireAdmin(Layout,props){

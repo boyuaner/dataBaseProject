@@ -4,6 +4,7 @@ import MyModal from '../Modal';
 import api from '../../api';
 import { instanceOf } from 'prop-types';
 import { withCookies, Cookies } from 'react-cookie';
+import {withRouter} from "react-router-dom";
 import moment from 'moment';
 class ActivitiList extends React.Component {
   static propTypes = {
@@ -13,6 +14,7 @@ class ActivitiList extends React.Component {
     super(props);
     const {cookies} = this.props;
     this.state = {
+      loading:true,
       cardList: [
         {
           proj_id: 1,
@@ -60,8 +62,10 @@ class ActivitiList extends React.Component {
               if(data.code === 0){
                 // console.log(data.obj.actList);
                 this.setState({
+                  loading:false,
                   actList:data.obj.actList,
                 })
+
               }
             });
           }
@@ -82,7 +86,7 @@ class ActivitiList extends React.Component {
               title={card.Title}
               key={card.proj_id}
               hoverable={true}
-              // loading={true}
+              loading={this.state.loading}
               extra={
                 <div>
                   <MyModal 
@@ -120,4 +124,4 @@ class ActivitiList extends React.Component {
   }
 }
 
-export default ActivitiList;
+export default withRouter(ActivitiList);

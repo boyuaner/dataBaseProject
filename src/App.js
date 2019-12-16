@@ -10,24 +10,17 @@ let history = createBrowserHistory();
 
 export default class App extends React.Component {
 
-  requireAuth(Layout, props) {
-    if (this.context.userId === "") { // 未登录
-      return <Redirect to="/login" />;
-    } else {
-      return <Layout {...props} />;
-    }
-  }
   render() {
     return (
       <CookiesProvider>
         <globalContext.Provider value={{
-          userId : "",
-          userPhoneNum: "",
+          userId : "201805130176",
+          userPhoneNum: "manage",
           manager:false,
         }}>
           <Router history={history}>
             <Switch>
-              <Route exact path="/" component={props=>this.requireAuth(MainPage,props)} />
+              <Route exact path="/" component={MainPage} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
               <Redirect from='' to="/" />

@@ -12,6 +12,7 @@ class MyActivitiList extends React.Component {
     super(props);
     const {cookies} = this.props;
     this.state = {
+      loading : true,
       cardList: [
         {
           proj_id: 1,
@@ -43,6 +44,7 @@ class MyActivitiList extends React.Component {
         },
       ],
       stuId : cookies ? cookies.load("stuId") : "201805130168",
+      // stuId:"201805130168",
       actList:[],
     }
   }
@@ -50,7 +52,7 @@ class MyActivitiList extends React.Component {
     
   }
   componentDidMount(){
-    const url = api.host + api.actDetail + "?stuId=" +this.state.stuId;
+    const url = api.host + api.actList + "?stuId=" +this.state.stuId;
     fetch(url, {
         headers:new Headers({
         'Content-Type': 'application/json',
@@ -62,6 +64,7 @@ class MyActivitiList extends React.Component {
               if(data.code === 0){
                 this.setState({
                   actList:data.obj.actList,
+                  loading:false,
                 })
               }
             })
@@ -77,10 +80,30 @@ class MyActivitiList extends React.Component {
     const UploadProps = {
       name: 'file',
       action: api.host+api.upload,
-      headers: {
-        authorization: 'authorization-text',
+      // headers: {
+      //   "content-type": 'mage/jpeg',
+      // },
+      // method:"POST",
+      customRequest: (options) => {
+        console.log(options);
+        // const data= new FormData()
+        // data.append('file', options.file);
+        // // data.append('proj_id',card.proj_id);
+        // data.append('uploadId',this.state.stuId+"_1");
+        // // let url = api.host + api.upload;
+        // fetch(options.action, {
+        //   headers:new Headers({
+        //     'Content-Type': 'application/json; boundary=----WebKitFormBoundaryqTqJIxvkWFYqvP5s',
+        //       }),
+        //   method: 'POST', // or 'PUT'
+          
+        // }).then((res) => {
+        //   options.onSuccess(res.data, options.file)
+        // }).catch((err) => {
+        //   console.log(err)
+        // })
+        
       },
-      method:"POST",
       onChange(info) {
         if (info.file.status !== 'uploading') {
           console.log(info.file, info.fileList);
@@ -97,11 +120,12 @@ class MyActivitiList extends React.Component {
         {
           this.state.cardList.map(card => {
             return (
-              <Card 
+              <Card
               // style={{margin:'10px'}}
               title={card.Title}
               key={card.proj_id}
               hoverable={true}
+              // loading={this.state.loading}
               extra={
                 <div>
                   <MyModal 

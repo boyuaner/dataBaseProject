@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../Header";
 import MyContent from "../Content";
-import {Route,Switch,Router,Redirect} from "react-router-dom";
+import {Route,Switch,Router,Redirect,withRouter} from "react-router-dom";
 import UserInfo from '../UserInfo'
 import ActivitiList from '../ActivitiList'
 import MyActivitiList from '../MyActivitiList'
@@ -15,13 +15,20 @@ let history = createBrowserHistory();
 // {Footer} = Layout;
 class MainPage extends React.Component{
     static contextType = globalContext;
-    requireAdmin(Layout, props) {
-        if (this.context.manager === false) {
-          return <Redirect to="/activitiList" />;
-        } else {
-          return <Layout {...props} />
+    componentDidMount(){
+        if(this.context.userId === ""){
+            this.props.history.push("/login");
+        }else {
+            // this.props.history.push("/activitiList")
         }
-      }
+    }
+    requireAdmin(Layout,props){
+        if(this.context.manager){
+            return <Layout {...props}/>
+        }else {
+            return <div/>
+        }
+    }
     render(){
         return (
             <Router history={history}>
@@ -29,7 +36,7 @@ class MainPage extends React.Component{
                 <Header/>
                 <MyContent>
                     <Switch>
-                        <Route exact path="/" component={ActivitiList} />
+                        {/* <Route exact path="/" component={ActivitiList} /> */}
                         <Route path="/activitiList" component={ActivitiList} />
                         <Route path="/myActivitiList" component={MyActivitiList} />
                         <Route path="/userInfo" component={UserInfo} />
@@ -44,4 +51,4 @@ class MainPage extends React.Component{
         );
     }
 }
-export default MainPage;
+export default withRouter(MainPage);

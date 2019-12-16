@@ -34,7 +34,7 @@ class MySidebar extends React.Component {
               title={
                 <span className="submenu-title-wrapper">
                   <Icon type="setting" />
-                  {this.context.userId}
+                  {this.context.userName}
                 </span>
               }
             >

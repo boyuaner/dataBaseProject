@@ -1,18 +1,26 @@
 import React from 'react'
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
-import { Link } from 'react-router-dom'
+import { Form, Icon, Input, Button, Checkbox,message } from 'antd';
+import { Link,withRouter } from 'react-router-dom'
 import { Row, Col } from 'antd';
 import { Typography } from 'antd';
+import globalContext from "../globalContext";
 import "../../App.css"
 import api from "../../api"
 const { Title } = Typography;
 
 
 class NormalLoginForm extends React.Component {
+  static contextType = globalContext;
+  state = {
+    loading : false,
+  }
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        this.setState({
+          loading:true,
+        })
         console.log('Received values of form: ', values);
         let url = api.host + api.login;
         fetch( url ,{
@@ -26,9 +34,14 @@ class NormalLoginForm extends React.Component {
             response.json().then(data =>{
                 console.log(data);
                 if(data.code === 0){
-                  alert("登录成功!");
+                  this.context.manager = data.obj.isManager === 1 ? true : false;
+                  this.context.userId = values.stuId;
+                  this.context.userName = data.obj.name;
+                  this.props.history.push("/");
+                  message.success("登录成功!");
+
                 }else {
-                  alert("登录失败！请检查用户名或密码！")
+                  message.warning("登录失败！请检查用户名或密码！")
                 }
               }
             )
@@ -36,7 +49,7 @@ class NormalLoginForm extends React.Component {
         )
       .catch(
         error =>{
-          alert("登录异常");
+          message.warning("登录异常");
           console.error('Error:', error)
         } 
       );
@@ -95,7 +108,7 @@ class NormalLoginForm extends React.Component {
           </Col>
             
             <Col span={4} offset={10}>
-              <Button size="large" type="primary" htmlType="submit" className="login-form-button">
+              <Button loading={this.state.loading} size="large" type="primary" htmlType="submit" className="login-form-button">
                 Log in
               </Button>    
                 <br/>
@@ -111,4 +124,4 @@ class NormalLoginForm extends React.Component {
 }
 
 const WrappedNormalLoginForm = Form.create({ name: 'normal_login' })(NormalLoginForm);
-export default WrappedNormalLoginForm;
+export default withRouter(WrappedNormalLoginForm);

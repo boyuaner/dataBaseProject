@@ -79,7 +79,7 @@ class ActivitiList extends React.Component {
     return (
       <div>
         {
-          this.state.actList.map(card => {
+          this.state.cardList.map(card => {
             return (
               <Card 
               // style={{margin:'10px'}}

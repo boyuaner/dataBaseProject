@@ -17,11 +17,13 @@ class MainPage extends React.Component{
     static contextType = globalContext;
     componentDidMount(){
         if(this.context.userId === ""){
-            
             this.props.history.push("/login");
         }else {
             // this.props.history.push("/activitiList")
             console.log(this.context.userId);
+            return (
+                <Redirect to='/activiList'/>
+            )
         }
     }
     requireAdmin(Layout,props){
@@ -38,8 +40,8 @@ class MainPage extends React.Component{
                 <Header/>
                 <MyContent>
                     <Switch>
-                        {/* <Route exact path="/" component={ActivitiList} /> */}
-                        <Route path="/activitiList" component={ActivitiList} />
+                        <Route exact path="/" component={MyActivitiList} />
+                        {/* <Route path="/activitiList" component={ActivitiList} /> */}
                         <Route path="/myActivitiList" component={MyActivitiList} />
                         <Route path="/userInfo" component={UserInfo} />
                         <Route path="/manageAct" component={props=>this.requireAdmin(ManageActList,props)} />

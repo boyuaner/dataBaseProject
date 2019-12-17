@@ -38,7 +38,7 @@ class NormalLoginForm extends React.Component {
                   this.context.manager = data.obj.isManager === 1 ? true : false;
                   this.context.userId = values.stuId;
                   this.context.userName = data.obj.name;
-                  this.props.history.push("/");
+                  this.props.history.replace('/');
                   message.success("登录成功!");
 
                 }else {

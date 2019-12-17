@@ -26,18 +26,17 @@ class Article extends React.Component {
         }).then(
             res => {
                 res.json().then(data=>{
-                    if(data.code === 0){
-                        this.setState({
-                            content:data.obj.article,
-                            title:data.obj.Title,
-                            type:data.obj.Type,
-                            endTime:data.obj.EndTime,
-                            creator:data.obj.Creator,
-                            fileList:data.obj.file,
-                            uploadDetail:data.obj.upload,
-                        });
-                    }
-
+                    console.log(this.state.uploadDetail);
+                    this.setState({
+                        
+                        content:data.obj.article,
+                        title:data.obj.Title,
+                        type:data.obj.Type,
+                        endTime:data.obj.EndTime,
+                        creator:data.obj.Creator,
+                        fileList:data.obj.file,
+                        uploadDetail:data.obj.upload,
+                    });
                 })
             }
         ).catch(

@@ -4,52 +4,22 @@ import MyModal from '../Modal';
 import api from '../../api';
 import { instanceOf } from 'prop-types';
 import { withCookies, Cookies } from 'react-cookie';
+import globalContext from "../globalContext";
+import '../../mock/mock';
 class MyActivitiList extends React.Component {
-  static propTypes = {
-    cookies: instanceOf(Cookies).isRequired
-  };
+  // static propTypes = {
+  //   cookies: instanceOf(Cookies).isRequired
+  // };
+  static contextType = globalContext;
   constructor(props) {
     super(props);
-    const {cookies} = this.props;
+    // const {cookies} = this.props;
     this.state = {
       loading : true,
-      cardList: [
-        {
-          proj_id: 1,
-          Title: 'Did you hear about the two silk worms in a race?',
-          Endtime:'2019.1.1',
-          Type:'Activit',
-          Creator:'kun'
-        },
-        {
-          proj_id: 2,
-          Title: 'Did you hear about the two silk worms in a race?',
-          Endtime:'2019.1.1',
-          Type:'Activit',
-          Creator:'kun'
-        },
-        {
-          proj_id: 3,
-          Title: 'Did you hear about the two silk worms in a race?',
-          Endtime:'2019.1.1',
-          Type:'Activit',
-          Creator:'kun'
-        },
-        {
-          proj_id: 4,
-          Title: 'Did you hear about the two silk worms in a race?',
-          Endtime:'2019.1.1',
-          Type:'Activit',
-          Creator:'kun'
-        },
-      ],
-      stuId : cookies ? cookies.load("stuId") : "201805130168",
-      // stuId:"201805130168",
+      // stuId : this.context.userId,
+      stuId:"201805130168",
       actList:[],
     }
-  }
-  handleUpload = (e)=>{
-    
   }
   componentDidMount(){
     const url = api.host + api.actList + "?stuId=" +this.state.stuId;
@@ -60,13 +30,13 @@ class MyActivitiList extends React.Component {
           method: 'GET', // or 'PUT'
         }).then(
           res=>{
+            // console.log(res.json());
             res.json().then(data=>{
-              if(data.code === 0){
+                console.log(data.obj.actList);
                 this.setState({
                   actList:data.obj.actList,
                   loading:false,
                 })
-              }
             })
           }
         ).catch(
@@ -78,40 +48,42 @@ class MyActivitiList extends React.Component {
   render() {
 
     const UploadProps = {
-      name: 'file',
+      // name:"file",
       action: api.host+api.upload,
-      // headers: {
-      //   "content-type": 'mage/jpeg',
-      // },
-      // method:"POST",
+      method:"POST",
+      // fileList:this.state.fileList,
       customRequest: (options) => {
-        console.log(options);
-        // const data= new FormData()
-        // data.append('file', options.file);
-        // // data.append('proj_id',card.proj_id);
-        // data.append('uploadId',this.state.stuId+"_1");
-        // // let url = api.host + api.upload;
-        // fetch(options.action, {
-        //   headers:new Headers({
-        //     'Content-Type': 'application/json; boundary=----WebKitFormBoundaryqTqJIxvkWFYqvP5s',
-        //       }),
-        //   method: 'POST', // or 'PUT'
-          
-        // }).then((res) => {
-        //   options.onSuccess(res.data, options.file)
-        // }).catch((err) => {
-        //   console.log(err)
-        // })
         
+        const formdata= new FormData();
+        formdata.append('file', options.file);
+        formdata.append('proj_id',4);
+        formdata.append('stuId',this.state.stuId);
+        // console.log(this.state.actList);
+        formdata.append('uploadId',3);
+        
+        // let url = api.host + api.upload;
+        fetch(options.action, {
+          method: 'POST', // or 'PUT'
+          body:formdata,
+        }).then((res) => {
+          res.json().then( (data)=>{
+            console.log(data.code);
+            if(data.code === 0)
+              message.success("上传成功！");
+          })
+        }).catch((err) => {
+          console.log(err)
+        })
       },
       onChange(info) {
+        console.log(info.file.status);
         if (info.file.status !== 'uploading') {
           console.log(info.file, info.fileList);
         }
         if (info.file.status === 'done') {
-          message.success(`${info.file.name} file uploaded successfully`);
+          message.success(`${info.file.name} 上传成功！`);
         } else if (info.file.status === 'error') {
-          message.error(`${info.file.name} file upload failed.`);
+          message.error(`${info.file.name} 上传失败`);
         }
       }
     };
@@ -138,7 +110,7 @@ class MyActivitiList extends React.Component {
               >
                 <div>
                   <Row type="flex" justify="start" align="middle">
-                    <Col span={3}>
+                    <Col span={22}>
                     <strong>
                     <Tag color="#87d068">
                       创建者:{card.Creator}
@@ -149,9 +121,10 @@ class MyActivitiList extends React.Component {
                     </strong>
                     </Col>
                     <Col span={1}>
-                    <Upload {...UploadProps}>
+                    <Upload {...UploadProps} data={card.proj_id}>
+                    {/* data={{proj_id:card.proj_id,uploadId:card.key}} */}
                       <Button>
-                        <Icon type="upload" /> Click to Upload
+                        <Icon type="upload" /> 点击上传文件
                       </Button>
                     </Upload>
                     </Col>

@@ -1,21 +1,26 @@
-import {action, computed, observable} from 'mobx-react';
+import {action, computed, observable} from 'mobx';
 export default class Store {
-    @observable user = {
+    @observable 
+    user = {
         userId:'',
         name:'',
         manager:false,
         userPhoneNum:'',
     };
-    @computed get userId(){
+    @computed 
+    get userId(){
         return this.user.userId;
     }
-    @computed get name(){
+    @computed 
+    get name(){
         return this.user.name;
     }
-    @computed get manager(){
+    @computed 
+    get manager(){
         return this.user.manager;
     }
-    @action updateUser(user){
+    @action 
+    updateUser(user){
         this.user = user;
     }
 }

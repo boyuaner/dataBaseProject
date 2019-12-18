@@ -4,11 +4,15 @@
   "private": true,
   "dependencies": {
     "antd": "^3.23.6",
+    "customize-cra": "^0.9.1",
     "fetch-mock": "^8.1.0",
     "history": "^4.10.1",
     "js-md5": "^0.7.3",
+    "mobx": "^5.15.1",
+    "mobx-react": "^6.1.4",
     "mockjs": "^1.1.0",
     "react": "^16.10.2",
+    "react-app-rewired": "^2.1.5",
     "react-cookie": "^4.0.1",
     "react-dom": "^16.10.2",
     "react-highlight-words": "^0.16.0",
@@ -16,10 +20,10 @@
     "react-scripts": "3.2.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-app-rewired eject"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -35,5 +39,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-proposal-decorators": "^7.7.4"
   }
 }

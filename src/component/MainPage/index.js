@@ -11,8 +11,13 @@ import { Layout } from "antd";
 import "../../App.css"
 import { createBrowserHistory } from 'history'
 import globalContext from '../globalContext'
+import {Provider} from 'mobx-react'
+import Store from '../../store/store'
 let history = createBrowserHistory();
 // {Footer} = Layout;
+const store = {
+    store:new Store()
+}
 class MainPage extends React.Component{
     static contextType = globalContext;
     componentDidMount(){
@@ -36,6 +41,7 @@ class MainPage extends React.Component{
     render(){
         return (
             <Router history={history}>
+                <Provider {...store}>
                 <Layout>
                 <Header/>
                 <MyContent>
@@ -51,6 +57,7 @@ class MainPage extends React.Component{
                 {/* <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer> */}
                 {/* <MyModal/> */}
                 </Layout>
+                </Provider>
             </Router>
         );
     }

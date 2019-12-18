@@ -5,19 +5,19 @@ import MainPage from "./component/MainPage"
 import { CookiesProvider } from 'react-cookie';
 import { Router, Route, Switch, Redirect } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
+import {Provider} from 'mobx-react'
+import Store from './store/store'
 import globalContext from './component/globalContext'
 let history = createBrowserHistory();
-
+const store = {
+  store:new Store()
+}
 export default class App extends React.Component {
 
   render() {
     return (
       <CookiesProvider>
-        <globalContext.Provider value={{
-          userId : "",
-          userPhoneNum: "manage",
-          manager:false,
-        }}>
+         <Provider {...store}>
           <Router history={history}>
             <Switch>
               <Route exact path="/" component={MainPage} />
@@ -26,7 +26,7 @@ export default class App extends React.Component {
               <Redirect from='' to="/" />
             </Switch>
           </Router>
-        </globalContext.Provider>
+        </Provider>
       </CookiesProvider>
     );
   }

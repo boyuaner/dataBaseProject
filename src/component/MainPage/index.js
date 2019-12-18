@@ -7,25 +7,20 @@ import ActivitiList from '../ActivitiList'
 import MyActivitiList from '../MyActivitiList'
 import ManageActList from '../ManageActList'
 import Rank from '../Rank'
-import { Layout } from "antd";
+import {observer,inject} from "mobx-react"
+import { Layout,message } from "antd";
 import "../../App.css"
 import { createBrowserHistory } from 'history'
-import globalContext from '../globalContext'
-import {Provider} from 'mobx-react'
-import Store from '../../store/store'
+
 let history = createBrowserHistory();
 // {Footer} = Layout;
-const store = {
-    store:new Store()
-}
+@inject("store")
+@observer
 class MainPage extends React.Component{
-    static contextType = globalContext;
     componentDidMount(){
-        if(this.context.userId === ""){
+        if(this.props.store.user.userId === ""){
             this.props.history.push("/login");
         }else {
-            // this.props.history.push("/activitiList")
-            console.log(this.context.userId);
             return (
                 <Redirect to='/activiList'/>
             )
@@ -38,16 +33,25 @@ class MainPage extends React.Component{
             return <div/>
         }
     }
+    handleLogout = ()=>{
+        message.success("已退出");
+        this.props.store.updateUser({
+          userId:'',
+          userName:'',
+          manager:false,
+          userPhoneNum:'',
+        })
+        this.props.history.push("/login");
+      }
     render(){
         return (
             <Router history={history}>
-                <Provider {...store}>
                 <Layout>
-                <Header/>
+                <Header logout={this.handleLogout}/>
                 <MyContent>
                     <Switch>
                         <Route exact path="/" component={MyActivitiList} />
-                        {/* <Route path="/activitiList" component={ActivitiList} /> */}
+                        <Route path="/activitiList" component={ActivitiList} />
                         <Route path="/myActivitiList" component={MyActivitiList} />
                         <Route path="/userInfo" component={UserInfo} />
                         <Route path="/manageAct" component={props=>this.requireAdmin(ManageActList,props)} />
@@ -57,7 +61,6 @@ class MainPage extends React.Component{
                 {/* <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer> */}
                 {/* <MyModal/> */}
                 </Layout>
-                </Provider>
             </Router>
         );
     }

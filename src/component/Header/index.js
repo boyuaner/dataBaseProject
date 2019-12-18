@@ -1,14 +1,15 @@
 import React from "react"
-import {Link} from "react-router-dom"
-import { Layout, Menu, Breadcrumb,Row,Col,Button,Icon } from 'antd';
+import {Link,withRouter} from "react-router-dom"
+import { Layout, Menu, Breadcrumb,Row,Col,Button,Icon, message } from 'antd';
 import { Typography } from 'antd';
 import "../../App.css"
-import globalContext from '../globalContext'
+import {observer,inject} from "mobx-react"
 const { Title } = Typography;
 const { Header, Content, Footer } = Layout;
 const {SubMenu} = Menu;
+@inject("store")
+@observer
 class MySidebar extends React.Component {
-  static contextType = globalContext;
     state = {
       collapsed: false,
       current: 'mail',
@@ -28,13 +29,15 @@ class MySidebar extends React.Component {
       });
     };
   
+
     render() {
+      // console.log(this.props.store)
       const MenuUpRight = (
         <SubMenu
               title={
                 <span className="submenu-title-wrapper">
                   <Icon type="setting" />
-                  {this.context.userName}
+                  {this.props.store.user.name}
                 </span>
               }
             >
@@ -51,9 +54,9 @@ class MySidebar extends React.Component {
           </Menu.Item>
         </Menu.ItemGroup>) : null }
         <Menu.ItemGroup title="Exit">
-          <Menu.Item key="setting:3"><Icon type="export" />
+          <Menu.Item key="setting:3" onClick={this.props.logout}><Icon type="export" />
           退出
-          <Link to="/logout"/>
+          {/* <Link to="/logout"/> */}
           </Menu.Item>
           </Menu.ItemGroup>
           </SubMenu>
@@ -105,4 +108,4 @@ class MySidebar extends React.Component {
       );
     }
   }
-  export default MySidebar;
+  export default withRouter(MySidebar);

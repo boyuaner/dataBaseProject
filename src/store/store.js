@@ -3,7 +3,7 @@ export default class Store {
     @observable 
     user = {
         userId:'',
-        name:'',
+        userName:'',
         manager:false,
         userPhoneNum:'',
     };
@@ -22,5 +22,9 @@ export default class Store {
     @action 
     updateUser(user){
         this.user = user;
+    }
+    @action
+    updateUserId(userId){
+        this.user.userId = userId;
     }
 }

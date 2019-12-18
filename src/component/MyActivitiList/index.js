@@ -5,7 +5,10 @@ import api from '../../api';
 import { instanceOf } from 'prop-types';
 import { withCookies, Cookies } from 'react-cookie';
 import globalContext from "../globalContext";
+import {observer,inject} from "mobx-react"
 import '../../mock/mock';
+@inject("store")
+@observer
 class MyActivitiList extends React.Component {
   // static propTypes = {
   //   cookies: instanceOf(Cookies).isRequired
@@ -17,11 +20,12 @@ class MyActivitiList extends React.Component {
     this.state = {
       loading : true,
       // stuId : this.context.userId,
-      stuId:"201805130168",
+      stuId:this.props.store.user.userId,
       actList:[],
     }
   }
   componentDidMount(){
+    console.log(this.state.stuId);
     const url = api.host + api.actList + "?stuId=" +this.state.stuId;
     fetch(url, {
         headers:new Headers({
@@ -32,7 +36,7 @@ class MyActivitiList extends React.Component {
           res=>{
             // console.log(res.json());
             res.json().then(data=>{
-                console.log(data.obj.actList);
+                // console.log(data.obj.actList);
                 this.setState({
                   actList:data.obj.actList,
                   loading:false,

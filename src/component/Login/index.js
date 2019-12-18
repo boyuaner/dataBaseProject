@@ -3,15 +3,16 @@ import { Form, Icon, Input, Button, Checkbox,message } from 'antd';
 import { Link,withRouter } from 'react-router-dom'
 import { Row, Col } from 'antd';
 import { Typography } from 'antd';
-import globalContext from "../globalContext";
 import "../../App.css"
 import api from "../../api"
 import '../../mock/mock';
+import {observer,inject} from "mobx-react"
+
 const { Title } = Typography;
 
-
+@inject("store")
+@observer
 class NormalLoginForm extends React.Component {
-  static contextType = globalContext;
   state = {
     loading : false,
   }
@@ -33,11 +34,13 @@ class NormalLoginForm extends React.Component {
         }).then( 
           response => {
             response.json().then(data =>{
-                console.log(data);
                 if(data.code === 0){
-                  this.context.manager = data.obj.isManager === 1 ? true : false;
-                  this.context.userId = values.stuId;
-                  this.context.userName = data.obj.name;
+                  this.props.store.updateUser ({
+                    manager : data.obj.isManager === 1 ? true : false,
+                    userId: values.stuId,
+                    name : data.obj.name,
+                })
+                  // this.props.store.updateUserId(values.stuId);
                   this.props.history.replace('/');
                   message.success("登录成功!");
 

@@ -4,7 +4,7 @@ import api from '../api';
 FetchMock.once(api.host+api.login,Mock.mock({
     'code':0,
     'obj':{
-    'isManager|':1,
+    'isManager|0-1':1,
     'name':'@cname',
 }}))
 FetchMock.get(RegExp(api.host+api.actList+".*"),Mock.mock({

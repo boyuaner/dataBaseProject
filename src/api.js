@@ -6,4 +6,5 @@ module.exports = {
     actList : "/actList",
     upload:"/upload",
     userInfo: "/infoMe",
+    joinAct:"/joinAct",
 }

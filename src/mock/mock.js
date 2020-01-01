@@ -1,10 +1,10 @@
 import Mock from 'mockjs';
 import FetchMock from 'fetch-mock';
 import api from '../api';
-FetchMock.once(api.host+api.login,Mock.mock({
+FetchMock.post(api.host+api.login,Mock.mock({
     'code':0,
     'obj':{
-    'isManager|0-1':1,
+    'isManager':1,
     'name':'@cname',
 }}))
 FetchMock.get(RegExp(api.host+api.actList+".*"),Mock.mock({
@@ -53,6 +53,10 @@ FetchMock.post(api.host+api.userInfo,Mock.mock({
 FetchMock.post(api.host+api.upload,Mock.mock({
     'code':0,
 }))
+FetchMock.get(RegExp(api.host+api.joinAct+".*"),Mock.mock({
+    'code|0-1':1,
+}))
+
 FetchMock.once('*', (url, options) => {
     FetchMock.restore();
     return fetch(url, options);

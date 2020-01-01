@@ -11,6 +11,7 @@ import {observer,inject} from "mobx-react"
 import { Layout,message } from "antd";
 import "../../App.css"
 import { createBrowserHistory } from 'history'
+import Article from '../Article'
 
 let history = createBrowserHistory();
 // {Footer} = Layout;
@@ -19,7 +20,7 @@ let history = createBrowserHistory();
 class MainPage extends React.Component{
     componentDidMount(){
         if(this.props.store.user.userId === ""){
-            this.props.history.push("/login");
+            // this.props.history.push("/login");
         }else {
             return (
                 <Redirect to='/activiList'/>
@@ -27,7 +28,7 @@ class MainPage extends React.Component{
         }
     }
     requireAdmin(Layout,props){
-        if(this.context.manager){
+        if(this.props.store.user.manager){
             return <Layout {...props}/>
         }else {
             return <div/>
@@ -51,11 +52,10 @@ class MainPage extends React.Component{
                 <MyContent>
                     <Switch>
                         <Route exact path="/" component={MyActivitiList} />
-                        <Route path="/activitiList" component={ActivitiList} />
                         <Route path="/myActivitiList" component={MyActivitiList} />
                         <Route path="/userInfo" component={UserInfo} />
+                        <Route path="/actDetail/:id" component={Article}/>
                         <Route path="/manageAct" component={props=>this.requireAdmin(ManageActList,props)} />
-                        <Route path="/rank" component={Rank} />
                     </Switch>
                 </MyContent>
                 {/* <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer> */}

@@ -5,6 +5,7 @@ import api from '../../api';
 import { instanceOf } from 'prop-types';
 import { withCookies, Cookies } from 'react-cookie';
 import globalContext from "../globalContext";
+import {withRouter} from "react-router-dom";
 import {observer,inject} from "mobx-react"
 import '../../mock/mock';
 @inject("store")
@@ -25,7 +26,6 @@ class MyActivitiList extends React.Component {
     }
   }
   componentDidMount(){
-    console.log(this.state.stuId);
     const url = api.host + api.actList + "?stuId=" +this.state.stuId;
     fetch(url, {
         headers:new Headers({
@@ -49,48 +49,13 @@ class MyActivitiList extends React.Component {
             }
         );
   }
+  handleClick = (card)=>{
+    // console.log(card);
+    this.props.history.push("/actDetail/"+card.proj_id);
+  }
   render() {
 
-    const UploadProps = {
-      // name:"file",
-      action: api.host+api.upload,
-      method:"POST",
-      // fileList:this.state.fileList,
-      customRequest: (options) => {
-        
-        const formdata= new FormData();
-        formdata.append('file', options.file);
-        formdata.append('proj_id',4);
-        formdata.append('stuId',this.state.stuId);
-        // console.log(this.state.actList);
-        formdata.append('uploadId',3);
-        
-        // let url = api.host + api.upload;
-        fetch(options.action, {
-          method: 'POST', // or 'PUT'
-          body:formdata,
-        }).then((res) => {
-          res.json().then( (data)=>{
-            console.log(data.code);
-            if(data.code === 0)
-              message.success("上传成功！");
-          })
-        }).catch((err) => {
-          console.log(err)
-        })
-      },
-      onChange(info) {
-        console.log(info.file.status);
-        if (info.file.status !== 'uploading') {
-          console.log(info.file, info.fileList);
-        }
-        if (info.file.status === 'done') {
-          message.success(`${info.file.name} 上传成功！`);
-        } else if (info.file.status === 'error') {
-          message.error(`${info.file.name} 上传失败`);
-        }
-      }
-    };
+
     return (
       <div>
         {
@@ -111,6 +76,7 @@ class MyActivitiList extends React.Component {
                   />
                 </div>
               }
+              onClick={() => this.handleClick(card)}
               >
                 <div>
                   <Row type="flex" justify="start" align="middle">
@@ -124,14 +90,6 @@ class MyActivitiList extends React.Component {
                     </Tag>
                     </strong>
                     </Col>
-                    <Col span={1}>
-                    <Upload {...UploadProps} data={card.proj_id}>
-                    {/* data={{proj_id:card.proj_id,uploadId:card.key}} */}
-                      <Button>
-                        <Icon type="upload" /> 点击上传文件
-                      </Button>
-                    </Upload>
-                    </Col>
                   </Row>
                 </div>
               </Card>
@@ -143,4 +101,4 @@ class MyActivitiList extends React.Component {
   }
 }
 
-export default MyActivitiList;
+export default withRouter(MyActivitiList);

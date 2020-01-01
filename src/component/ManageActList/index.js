@@ -1,200 +1,104 @@
-import React from "react"
-import { Typography, Layout, Breadcrumb ,Table, Input, InputNumber, Popconfirm, Form, Divider,Col,Row} from 'antd';
-import MyModal from "../Modal";
-import "../../App.css";
-
-const { Title, Paragraph, Text } = Typography;
-const { Content } = Layout;
-const data = [];
-for (let i = 0; i < 32; i++) {
-  data.push({
-    key: i.toString(),
-    name: `Edrward ${i}`,
-    age: 32,
-    address: `London Park no. ${i}`,
-  });
-}
-const EditableContext = React.createContext();
-class EditableCell extends React.Component {
-    getInput = () => {
-      if (this.props.inputType === 'number') {
-        return <InputNumber />;
-      }
-      return <Input />;
-    };
-  
-    renderCell = ({ getFieldDecorator }) => {
-      const {
-        editing,
-        dataIndex,
-        title,
-        inputType,
-        record,
-        index,
-        children,
-        ...restProps
-      } = this.props;
-      return (
-        <td {...restProps}>
-          {editing ? (
-            <Form.Item style={{ margin: 0 }}>
-              {getFieldDecorator(dataIndex, {
-                rules: [
-                  {
-                    required: true,
-                    message: `Please Input ${title}!`,
-                  },
-                ],
-                initialValue: record[dataIndex],
-              })(this.getInput())}
-            </Form.Item>
-          ) : (
-            children
-          )}
-        </td>
-      );
-    };
-  
-    render() {
-      return <EditableContext.Consumer>{this.renderCell}</EditableContext.Consumer>;
+import { message,Tag,Table,Popconfirm ,Col,Divider,Card,Row,Button,Upload,Icon} from 'antd';
+import React from 'react';
+import MyModal from '../Modal';
+import api from '../../api';
+import { instanceOf } from 'prop-types';
+import { withCookies, Cookies } from 'react-cookie';
+import globalContext from "../globalContext";
+import {withRouter} from "react-router-dom";
+import {observer,inject} from "mobx-react"
+import '../../mock/mock';
+@inject("store")
+@observer
+class ManageActList extends React.Component {
+  // static propTypes = {
+  //   cookies: instanceOf(Cookies).isRequired
+  // };
+  static contextType = globalContext;
+  constructor(props) {
+    super(props);
+    // const {cookies} = this.props;
+    this.state = {
+      loading : true,
+      // stuId : this.context.userId,
+      stuId:this.props.store.user.userId,
+      actList:[],
     }
   }
+  componentDidMount(){
+    const url = api.host + api.actList + "?stuId=" +this.state.stuId;
+    fetch(url, {
+        headers:new Headers({
+        'Content-Type': 'application/json',
+          }),
+          method: 'GET', // or 'PUT'
+        }).then(
+          res=>{
+            // console.log(res.json());
+            res.json().then(data=>{
+                // console.log(data.obj.actList);
+                this.setState({
+                  actList:data.obj.actList,
+                  loading:false,
+                })
+            })
+          }
+        ).catch(
+            err=>{
+                message.warning("网络连接异常，信息获取失败！");
+            }
+        );
+  }
+  handleClick = (card)=>{
+    // console.log(card);
+    this.props.history.push("/actDetail/"+card.proj_id);
+  }
+  render() {
 
-class MList extends React.Component{
 
-    constructor(props) {
-        super(props);
-        this.state = { data, editingKey: '' };
-        this.columns = [
-          {
-            title: 'name',
-            dataIndex: 'name',
-            width: '25%',
-            editable: true,
-          },
-          {
-            title: 'age',
-            dataIndex: 'age',
-            width: '15%',
-            editable: true,
-          },
-          {
-            title: 'address',
-            dataIndex: 'address',
-            width: '20%',
-            editable: true,
-          },
-          {
-            title: 'range',
-            dataIndex: 'range',
-            width: '20%',
-            editable: true,
-          },
-          {
-            title: 'operation',
-            dataIndex: 'operation',
-            render: (text, record) => {
-              const { editingKey } = this.state;
-              const editable = this.isEditing(record);
-              
-              return editable ? (
-                <span>
-                  <EditableContext.Consumer>
-                    {form => (
-                      <a
-                        onClick={() => this.save(form, record.key)}
-                        style={{ marginRight: 8 }}
-                      >
-                        Save
-                      </a>
-                    )}
-                  </EditableContext.Consumer>
-                  <Popconfirm title="Sure to cancel?" onConfirm={() => this.cancel(record.key)}>
-                    <a>Cancel</a>
-                  </Popconfirm>
-                </span>
-              ) : (
-                <span>
-                  <MyModal type="form" text="Detail" />
-                  {/* <Col span={1}><Divider type="vertical" /></Col>
-                  <MyModal text="More"/> */}
-                </span>
-              );
-            },
-          },
-        ];
-      }
-    
-      isEditing = record => record.key === this.state.editingKey;
-    
-      cancel = () => {
-        this.setState({ editingKey: '' });
-      };
-    
-      save(form, key) {
-        form.validateFields((error, row) => {
-          if (error) {
-            return;
-          }
-          const newData = [...this.state.data];
-          const index = newData.findIndex(item => key === item.key);
-          if (index > -1) {
-            const item = newData[index];
-            newData.splice(index, 1, {
-              ...item,
-              ...row,
-            });
-            this.setState({ data: newData, editingKey: '' });
-          } else {
-            newData.push(row);
-            this.setState({ data: newData, editingKey: '' });
-          }
-        });
-      }
-    
-      edit(key) {
-        this.setState({ editingKey: key });
-      }
-    
-      render() {
-        const components = {
-          body: {
-            cell: EditableCell,
-          },
-        };
-    
-        const columns = this.columns.map(col => {
-          if (!col.editable) {
-            return col;
-          }
-          return {
-            ...col,
-            onCell: record => ({
-              record,
-              inputType: col.dataIndex === 'age' ? 'number' : 'text',
-              dataIndex: col.dataIndex,
-              title: col.title,
-              editing: this.isEditing(record),
-            }),
-          };
-        });
-        
-        return (
-          <EditableContext.Provider value={this.props.form}>
-            <Table
-              components={components}
-              bordered
-              dataSource={this.state.data}
-              columns={columns}
-              rowClassName="editable-row"
-              pagination={{
-                onChange: this.cancel,
-                pageSize:20,
-              }}
-            />
-          </EditableContext.Provider>
-        )
-      }
+    return (
+      <div>
+        {
+          this.state.actList.map(card => {
+            return (
+              <Card
+              // style={{margin:'10px'}}
+              title={card.Title}
+              key={card.proj_id}
+              hoverable={true}
+              // loading={this.state.loading}
+              extra={
+                <div>
+                  <MyModal 
+                  type="article" 
+                  text="Detail" 
+                  id={card.proj_id}
+                  />
+                </div>
+              }
+              onClick={() => this.handleClick(card)}
+              >
+                <div>
+                  <Row type="flex" justify="start" align="middle">
+                    <Col span={22}>
+                    <strong>
+                    <Tag color="#87d068">
+                      创建者:{card.Creator}
+                    </Tag>
+                    <Tag color="#f50">
+                      结束时间:{card.Endtime}
+                    </Tag>
+                    </strong>
+                    </Col>
+                  </Row>
+                </div>
+              </Card>
+            );
+          })
+        }
+      </div>
+    );
+  }
 }
-const ManageActList = Form.create()(MList);
-export default ManageActList;
+
+export default withRouter(ManageActList);

@@ -1,9 +1,9 @@
 import {action, computed, observable} from 'mobx';
-export default class Store {
+export default class UserInfoStore {
     @observable 
     user = {
         userId:'',
-        userName:'',
+        name:'',
         manager:false,
         userPhoneNum:'',
     };

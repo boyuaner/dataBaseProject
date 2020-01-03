@@ -54,7 +54,7 @@ class MainPage extends React.Component{
                         <Route exact path="/" component={MyActivitiList} />
                         <Route path="/myActivitiList" component={MyActivitiList} />
                         <Route path="/userInfo" component={UserInfo} />
-                        <Route path="/actDetail/:id" component={Article}/>
+                        <Route path="/actDetail/:id" component={ActivitiList}/>
                         <Route path="/manageAct" component={props=>this.requireAdmin(ManageActList,props)} />
                     </Switch>
                 </MyContent>

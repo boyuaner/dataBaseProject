@@ -48,9 +48,15 @@ class Article extends React.Component {
             }
         )
     }
-    handleEditContent = (event,str)=>{
-        // event.preventDefault();
-        console.log(str);
+    handleTitleChange = (str)=>{
+        this.setState({
+            title:str,
+        })
+    }
+    handleContentChange = (str)=>{
+        this.setState({
+            content:str,
+        })
     }
     render() {
         const UploadProps = {
@@ -90,13 +96,9 @@ class Article extends React.Component {
                 }
             }
         };
-        const editOption={
-            editing:this.state.editable,
-            onChange:this.handleEditContent({str:"222"}),
-        }
         return (
                 <Typography  style={{ background: '#fff', padding: 24, minHeight: 400 }}>
-                    <Title editable = {this.state.editable}>
+                    <Title >
                         {this.state.title}
                     </Title>
                     <strong>
@@ -108,7 +110,7 @@ class Article extends React.Component {
                         </Tag>
                     </strong>
                     <br /><br />
-                    <Paragraph editable = {this.state.editable}>
+                    <Paragraph >
                         {this.state.content}
                     </Paragraph>
                     <Upload {...UploadProps}>
@@ -117,7 +119,6 @@ class Article extends React.Component {
                     </Button>
                     </Upload>
                 </Typography>
-
         );
     }
 }

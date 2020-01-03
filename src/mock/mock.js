@@ -22,7 +22,7 @@ FetchMock.get(RegExp(api.host+api.actDetail+".*"),Mock.mock({
     'obj':{
         'Title':'@ctitle', //活动名称
         'Type|1':["Qua","Arr","Noti"], // 活动类型
-        'Endtime':'@date("yyyy-MM-dd")',  //活动结束时间
+        'Endtime':'@date("yyyy-mm-dd")',  //活动结束时间
         'Creator':"@cname", // 活动创建者
         'article':'@cparagraph', // 活动文章
         'question|3-5':[{

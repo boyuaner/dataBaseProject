@@ -54,8 +54,6 @@ class ManageActList extends React.Component {
     this.props.history.push("/actDetail/"+card.proj_id);
   }
   render() {
-
-
     return (
       <div>
         {

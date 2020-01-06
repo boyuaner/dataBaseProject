@@ -55,7 +55,8 @@ class MainPage extends React.Component{
                         <Route path="/myActivitiList" component={MyActivitiList} />
                         <Route path="/userInfo" component={UserInfo} />
                         <Route path="/actDetail/:id" component={Article}/>
-                        <Route path="/manageAct" component={props=>this.requireAdmin(ManageActList,props)} />
+                        <Route exact path="/manageAct" component={props=>this.requireAdmin(ManageActList,props)} />
+                        <Route path="/manageAct/:id" component={props=>this.requireAdmin(ModifyProj,props)} />
                     </Switch>
                 </MyContent>
                 {/* <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer> */}

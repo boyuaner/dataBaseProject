@@ -34,7 +34,7 @@ class MyModal extends React.Component {
   };
   handleClick = (card)=>{
     // console.log(card);
-    this.props.history.push("/actDetail/"+this.state.id);
+    this.props.history.push("/manageAct/"+this.state.id);
   }
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -54,7 +54,6 @@ class MyModal extends React.Component {
 
     return (
       <div>
-        
         <Button span={2} type="primary" onClick={this.handleClick}>
           修改
         </Button>

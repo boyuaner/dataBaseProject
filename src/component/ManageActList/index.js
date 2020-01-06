@@ -1,9 +1,10 @@
-import { message,Tag,Table,Popconfirm ,Col,Divider,Card,Row,Button,Upload,Icon} from 'antd';
+import { message,Tag,Table,Popconfirm ,Col,Divider,Card,Row,Button,Upload,Icon,Affix} from 'antd';
 import React from 'react';
 import MyModal from '../Modal';
 import api from '../../api';
 import { instanceOf } from 'prop-types';
 import { withCookies, Cookies } from 'react-cookie';
+import AddAct from '../AddAct';
 import globalContext from "../globalContext";
 import {withRouter} from "react-router-dom";
 import {observer,inject} from "mobx-react"
@@ -23,8 +24,11 @@ class ManageActList extends React.Component {
       // stuId : this.context.userId,
       stuId:this.props.store.user.userId,
       actList:[],
+      modalVisable:false,
     }
   }
+
+  
   componentDidMount(){
     const url = api.host + api.actList + "?stuId=" +this.state.stuId;
     fetch(url, {
@@ -53,6 +57,7 @@ class ManageActList extends React.Component {
   render() {
     return (
       <div>
+      <AddAct visible={true}/>
         {
           this.state.actList.map(card => {
             return (

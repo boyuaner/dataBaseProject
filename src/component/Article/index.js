@@ -1,7 +1,8 @@
 import React from "react"
-import {  Button,Upload, Icon, Tag, message, Typography } from "antd"
+import {  Row,Col,Button,Upload, Icon, Tag, message, Typography } from "antd"
 import {observer,inject} from "mobx-react"
 import api from "../../api"
+import Questionnair from "../Questionnaire"
 const { Title, Paragraph } = Typography;
 @inject("store")
 @observer
@@ -124,9 +125,24 @@ class Article extends React.Component {
                     <Upload {...UploadProps}>
                         <Button>
                         <Icon type="upload" />上传附件
-                    </Button>
+                        
+                    </Button><br/><br/>
+                    <Tag color="#87d068"> 上传要求</Tag>
+                    cpp/doc/docx/ppt/pptx
                     </Upload>
+                    {/* <Tag>上传类型：</Tag>cpp/doc/docx/ppt/pptx */}
+                    <br/>
+                    <Questionnair/>
+                    <br/>
+                    <Row gutter={[16,16]}>
+                        <Col span={2} >
+                        <Button icon="diff" type="primary">
+                            确定提交
+                        </Button>
+                        </Col>
+                    </Row>
                 </Typography>
+                
         );
     }
 }

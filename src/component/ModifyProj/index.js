@@ -1,5 +1,5 @@
 import React from "react"
-import { Select, Row, Col, DatePicker, Button, Upload, Tag, message, Typography } from "antd"
+import { Select, Row, Col, DatePicker, Button, Upload, Tag, message, Typography,Tooltip } from "antd"
 import moment from 'moment'
 import { observer, inject } from "mobx-react"
 import api from "../../api"
@@ -7,7 +7,7 @@ const { Title, Paragraph } = Typography;
 const { Option } = Select;
 @inject("store")
 @observer
-class Article extends React.Component {
+class ModifyProj extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -20,6 +20,7 @@ class Article extends React.Component {
       creator: '',
       fileList: [],
       uploadDetail: [],
+      fileTypeLimit: '',
     }
   }
   componentDidMount() {
@@ -66,6 +67,12 @@ class Article extends React.Component {
   }
   handleSelectType = (value) => {
     console.log(`selected ${value}`);
+  }
+  handleFileTypeLimitChange = (value)=>{
+    this.setState({
+      fileTypeLimit: value,
+    })
+    console.log(value);
   }
   render() {
     const UploadProps = {
@@ -152,20 +159,26 @@ class Article extends React.Component {
           </Paragraph>
           <Row>
             <Col span={24} style={{ padding: "0 0 10px 0" }}>
-              <Select defaultValue="lucy" style={{ width: 120 }} onChange={this.handleContentChange}>
-                <Option value="jack">Jack</Option>
-                <Option value="lucy">Lucy</Option>
-                <Option value="disabled" disabled>
+              <Tooltip title="默认为空">
+              <Select placeholder="限制上传文件类型" style={{ width:200}} onChange={this.handleFileTypeLimitChange}>
+              <Option value="">{"<空>"}</Option>
+                <Option value="cpp">cpp</Option>
+                <Option value="doc">doc</Option>
+                {/* <Option value="ppt" disabled>
                   Disabled
-                </Option>
-                <Option value="Yiminghe">yiminghe</Option>
+                </Option> */}
+                <Option value="ppt">ppt</Option>
               </Select>
+              </Tooltip>
             </Col>
             <Col span={4}>
+            
               <Upload {...UploadProps}>
+              <Tooltip title="供参与者下载的文件">
                 <Button icon="upload">
                   上传附件
                 </Button>
+                </Tooltip>
               </Upload>
             </Col>
 
@@ -173,12 +186,12 @@ class Article extends React.Component {
           <br />
 
           <Row>
-            <Col span={2}>
+            <Col span={2} >
               <Button icon="save" type="primary">
-                保存修改
+                保存
                   </Button>
             </Col>
-            <Col span={2}>
+            <Col span={2} >
               <Button type="danger" icon="stop">
                 取消
               </Button>
@@ -191,4 +204,4 @@ class Article extends React.Component {
     );
   }
 }
-export default Article;
+export default ModifyProj;

@@ -49,10 +49,7 @@ class ManageActList extends React.Component {
             }
         );
   }
-  handleClick = (card)=>{
-    // console.log(card);
-    this.props.history.push("/actDetail/"+card.proj_id);
-  }
+
   render() {
     return (
       <div>
@@ -66,15 +63,8 @@ class ManageActList extends React.Component {
               hoverable={true}
               // loading={this.state.loading}
               extra={
-                <div>
-                  <MyModal 
-                  type="article" 
-                  text="Detail" 
-                  id={card.proj_id}
-                  />
-                </div>
+                <MyModal type="form" text="后台信息" id={card.proj_id}/>
               }
-              onClick={() => this.handleClick(card)}
               >
                 <div>
                   <Row type="flex" justify="start" align="middle">

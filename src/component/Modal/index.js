@@ -1,6 +1,8 @@
-import { Modal, Button ,Col,Row,Form,Input} from 'antd';
+import { Modal, Button ,Col,Row,Form,Input,Divider} from 'antd';
 import React from "react";
 import Article from "../Article";
+import {withRouter} from "react-router-dom"
+import ManageForm from "../ManageForm"
 const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
 class MyModal extends React.Component {
     constructor(props){
@@ -30,7 +32,10 @@ class MyModal extends React.Component {
       visible: false,
     });
   };
-
+  handleClick = (card)=>{
+    // console.log(card);
+    this.props.history.push("/actDetail/"+this.state.id);
+  }
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -41,37 +46,19 @@ class MyModal extends React.Component {
       <Article id={this.state.id}/>
     );
     const form = (
-      <Form>
-            {getFieldDecorator('id')(
-              <Input type='hidden'/>
-            )}
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item {...formItemLayout} label='姓名'>
-                  {getFieldDecorator('name', {
-                    rules: [
-                      {required: true, message: '请输入姓名',}
-                    ]
-                  })(
-                    <Input placeholder='请输入'/>
-                  )}
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item {...formItemLayout} label='公司'>
-                  {getFieldDecorator('company')(
-                    <Input placeholder='请输入'/>
-                  )}
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form>
+      <ManageForm id={this.state.id}/>
     );
     let content= "";
     if(this.props.type === "article") content = article;
     if(this.props.type === "form") content = form;
+
     return (
-      <Col span={1}>
+      <div>
+        
+        <Button span={2} type="primary" onClick={this.handleClick}>
+          修改
+        </Button>
+        <Divider type="vertical"/>
         <Button type="link" size="small" onClick={this.showModal}>
           {this.props.text}
         </Button>
@@ -85,8 +72,9 @@ class MyModal extends React.Component {
         >
           {content}
         </Modal>
-      </Col>
+      </div>
+        
     );
   }
 });
-export default CollectionCreateForm;
+export default withRouter(CollectionCreateForm);

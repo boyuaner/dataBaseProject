@@ -6,6 +6,7 @@ import { Typography } from 'antd';
 import "../../App.css"
 import api from "../../api"
 import '../../mock/mock';
+// import bkgimg from '../../../public/background.png'
 import {observer,inject} from "mobx-react"
 
 const { Title } = Typography;
@@ -64,65 +65,69 @@ class NormalLoginForm extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <Form onSubmit={this.handleSubmit} className="login-form">
-        <Row>
-        <Col span={24}><br/> </Col>
-        <Col span={24}><br/> </Col>
-        <Col span={24}><br/> </Col>
-        <Col span={24}><br/> </Col>
-          <Col span={8} offset={10}>
-          <Title >校园活动管理助手</Title >
-          </Col>
-          <Form.Item>
-          <Col span={4} offset={10}>
-              {getFieldDecorator('stuId', {
-                rules: [{ required: true, message: 'Please input your studentID!' }],
-              })(
-                <Input
-                  prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder="studentID"
-                />,
-              )}
-          </Col>
-          </Form.Item>
-          <Form.Item>
-          <Col span={4} offset={10}>
-              {getFieldDecorator('password', {
-                rules: [{ required: true, message: 'Please input your Password!' }],
-              })(
-                <Input
-                  prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  type="password"
-                  placeholder="Password"
-                />,
-              )}
-          </Col>
-          </Form.Item>
-          <Form.Item>
-          <Col span={4} offset={10}>
-              {/* {
-                getFieldDecorator('remember', {
-                valuePropName: 'checked',
-                initialValue: true,
-              })()} */}
-              <Checkbox>Remember me</Checkbox>
-              <Link to="/forget">
-                Forgot password? <br/> 
-              </Link>
-          </Col>
-            
-            <Col span={4} offset={10}>
-              <Button loading={this.state.loading} size="large" type="primary" htmlType="submit" className="login-form-button">
-                Log in
-              </Button>    
-                <br/>
+      <div>
+      <img style={{"position":"absolute","height":"1269px","width":"2558px"}} src="/background.png" alt=""/>
+      <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+      <Row>
+        <Col span={9} offset={11}>
+          <Form onSubmit={this.handleSubmit} className="login-form">
+          <Row gutter={[30,10]}>
+            <Col span={24}>
+            <Title >校园活动管理助手</Title >
             </Col>
-            
-            <Col span={3} offset={10}>Or  <Link to="/register">register now!</Link></Col>
+            <Form.Item>
+            <Col span={6} >
+                {getFieldDecorator('stuId', {
+                  rules: [{ required: true, message: 'Please input your studentID!' }],
+                })(
+                  <Input
+                    prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    placeholder="studentID"
+                  />,
+                )}
+            </Col>
             </Form.Item>
-          
-        </Row>
-      </Form>
+            <Form.Item>
+            <Col span={6} >
+                {getFieldDecorator('password', {
+                  rules: [{ required: true, message: 'Please input your Password!' }],
+                })(
+                  <Input
+                    prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    type="password"
+                    placeholder="Password"
+                  />,
+                )}
+            </Col>
+            </Form.Item>
+            <Form.Item>
+            <Col span={24} >
+                {/* {
+                  getFieldDecorator('remember', {
+                  valuePropName: 'checked',
+                  initialValue: true,
+                })()} */}
+                <Checkbox>Remember me</Checkbox>
+                <Link to="/forget">
+                  Forgot password? <br/> 
+                </Link>
+            </Col>
+            <br/>
+              <Col span={24}>
+                <Button loading={this.state.loading} size="large" type="primary" htmlType="submit" className="login-form-button">
+                  Log in
+                </Button>    
+                  
+              </Col>
+              <br/>
+              <Col span={3}>Or  <Link to="/register">register now!</Link></Col>
+              </Form.Item>
+            
+          </Row>
+        </Form>
+      </Col>
+    </Row>
+    </div>
     );
   }
 }

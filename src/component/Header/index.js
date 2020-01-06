@@ -58,6 +58,7 @@ class MySidebar extends React.Component {
     render() {
       // console.log(this.props.store)
       const MenuUpRight = (
+        
         <SubMenu
               title={
                 <span className="submenu-title-wrapper">
@@ -97,7 +98,7 @@ class MySidebar extends React.Component {
             </Button>
             </Col>
             
-            <Col span = {6} offset={4}>
+            {/* <Col span = {6} offset={4}>
             <Menu
               theme="white"
               mode="horizontal"
@@ -105,10 +106,10 @@ class MySidebar extends React.Component {
               style={{ lineHeight: '64px' }}
               onSelect={this.hadleSelect}
             >
-              <Menu.Item key="1" ><Link to="/myActivitiList">我的活动</Link></Menu.Item>
+              
             </Menu>
-            </Col>
-            <Col span = {2} >
+            </Col> */}
+            <Col span = {2} offset={10} >
               <Input 
               size="default" 
               placeholder="请输入活动口令！" 
@@ -127,6 +128,7 @@ class MySidebar extends React.Component {
               style={{ lineHeight: '64px' }}
               onSelect={this.hadleSelect}
               >
+              <Menu.Item key="1" ><Link to="/myActivitiList">我的活动</Link></Menu.Item>
               {MenuUpRight}
             </Menu>
             </Col>

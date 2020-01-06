@@ -112,10 +112,18 @@ class Article extends React.Component {
                     <br /><br />
                     <Paragraph >
                         {this.state.content}
+                        
                     </Paragraph>
+                    <a>2019-2020加州大学欧文分校学期访学研修项目通知（本科）.docx</a>
+                    <br/>
+                    <a>2019-2020美国加州大学欧文分校【本科】学期访学学分项目介绍.doc</a>
+                    <br/>
+                    <a>2019-2020美国加州大学欧文分校【本科】学期访学学分项目报名表.doc</a>
+                    <br/>
+                    <br/>
                     <Upload {...UploadProps}>
                         <Button>
-                        <Icon type="upload" />上传
+                        <Icon type="upload" />上传附件
                     </Button>
                     </Upload>
                 </Typography>

@@ -3,7 +3,7 @@ import Header from "../Header";
 import MyContent from "../Content";
 import {Route,Switch,Router,Redirect,withRouter} from "react-router-dom";
 import UserInfo from '../UserInfo'
-import ActivitiList from '../ActivitiList'
+import ModifyProj from '../ModifyProj'
 import MyActivitiList from '../MyActivitiList'
 import ManageActList from '../ManageActList'
 import Rank from '../Rank'
@@ -54,7 +54,7 @@ class MainPage extends React.Component{
                         <Route exact path="/" component={MyActivitiList} />
                         <Route path="/myActivitiList" component={MyActivitiList} />
                         <Route path="/userInfo" component={UserInfo} />
-                        <Route path="/actDetail/:id" component={ActivitiList}/>
+                        <Route path="/actDetail/:id" component={ModifyProj}/>
                         <Route path="/manageAct" component={props=>this.requireAdmin(ManageActList,props)} />
                     </Switch>
                 </MyContent>

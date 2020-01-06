@@ -67,15 +67,15 @@ class MyActivitiList extends React.Component {
               key={card.proj_id}
               hoverable={true}
               // loading={this.state.loading}
-              extra={
-                <div>
-                  <MyModal 
-                  type="article" 
-                  text="Detail" 
-                  id={card.proj_id}
-                  />
-                </div>
-              }
+              // extra={
+              //   <div>
+              //     <MyModal 
+              //     type="article" 
+              //     text="Detail" 
+              //     id={card.proj_id}
+              //     />
+              //   </div>
+              // }
               onClick={() => this.handleClick(card)}
               >
                 <div>

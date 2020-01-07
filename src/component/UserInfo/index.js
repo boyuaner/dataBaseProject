@@ -1,4 +1,4 @@
-import { Descriptions, Badge,Card,Avatar } from 'antd';
+import { Descriptions, Badge,Card,Avatar,Tag } from 'antd';
 import React from "react";
 import md5 from "js-md5";
 const userinfo = {
@@ -28,7 +28,8 @@ class UserInfo extends React.Component{
         <Card>
             <Avatar size={100} src={this.state.imgSrc} />
             <Descriptions title=" " bordered>
-            <Descriptions.Item label="Name"span={3}><h3>{userinfo.name}</h3></Descriptions.Item>
+            <Descriptions.Item label="Name"span={1}><h3>{userinfo.name}</h3></Descriptions.Item>
+            <Descriptions.Item label="Tag"span={2}><Tag color="#2db7f5">计科二班</Tag><Tag color="#87d068">A641</Tag></Descriptions.Item>
             <Descriptions.Item label="Class"span={1}>{userinfo.class}</Descriptions.Item>
             <Descriptions.Item label="Grade"span={1}>{userinfo.grade}</Descriptions.Item>
             <Descriptions.Item label="Phone Number"span={1}>{userinfo.phoneNumber} </Descriptions.Item>

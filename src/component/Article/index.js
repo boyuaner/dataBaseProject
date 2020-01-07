@@ -1,8 +1,8 @@
 import React from "react"
-import {  Row,Col,Button,Upload, Icon, Tag, message, Typography } from "antd"
+import {  Row,Col,Button,Upload, Icon, Tag, message, Typography,Divider,Card,Popover,Input,InputNumber } from "antd"
 import {observer,inject} from "mobx-react"
+import {withRouter} from "react-router-dom"
 import api from "../../api"
-import Questionnair from "../Questionnaire"
 const { Title, Paragraph } = Typography;
 @inject("store")
 @observer
@@ -19,10 +19,14 @@ class Article extends React.Component {
             creator: '',
             fileList: [],
             uploadDetail: [],
+            questionList: [],
+            questionnaire:'',
+            answer:[],
+            score:'',
         }
     }
     componentDidMount() {
-        const url = api.host + api.actDetail + "?actId=" + this.state.id;
+        const url = api.host + api.actDetail + "?projId=" + this.state.id;
         fetch(url, {
             headers: new Headers({
                 'Content-Type': 'application/json',
@@ -32,15 +36,17 @@ class Article extends React.Component {
             res => {
                 res.json().then(data => {
                     this.setState({
-                        content: data.obj.article,
-                        title: data.obj.Title,
-                        type: data.obj.Type,
-                        endTime: data.obj.EndTime,
-                        creator: data.obj.Creator,
+                        content: data.obj.content,
+                        title: data.obj.title,
+                        type: data.obj.type,
+                        endTime: data.obj.endTime,
+                        creator: data.obj.creator,
                         fileList: data.obj.file,
                         uploadDetail: data.obj.upload,
+                        questionnaire:data.obj.questionnaire,
+                        questionList:data.obj.question,
+                        fileState:'uploading',
                     });
-                    console.log(this.state);
                 });
             }
         ).catch(
@@ -59,6 +65,40 @@ class Article extends React.Component {
             content:str,
         })
     }
+    hadleScore = (value)=>{
+        this.setState({
+            score:value,
+        })
+    }
+    submit = ()=>{
+        let url = api.host+api.answer;
+        let myvalues = {
+            stuId:this.props.store.user.userId,
+            projId:this.state.id,
+            ans:this.state.answer,
+        }
+        Promise.race([fetch(url, {
+            headers:new Headers({
+            'Content-Type': 'application/json',
+            }),
+            method: 'POST', // or 'PUT',
+            body: JSON.stringify(myvalues)
+          }).then(
+            res=>{
+              res.json().then(data=>{
+                  if(data.code === 0){
+                    message.success("提交成功！");
+                  }else if(data.code === -1){
+                    message.warning("提交失败！");
+                  }
+              })
+            }
+          ).catch(
+            err=>{
+                message.warning("网络连接异常，信息获取失败！");
+            }
+       )]);
+    }
     render() {
         const UploadProps = {
             action: api.host + api.upload,
@@ -67,9 +107,9 @@ class Article extends React.Component {
             customRequest: (options) => {
                 const formdata = new FormData();
                 formdata.append('file', options.file);
-                formdata.append('proj_id', this.state.id);
-                formdata.append('stuId', this.state.stuId);
-                formdata.append('uploadId', this.state.uploadDetail.id);
+                formdata.append('projId', this.state.id);
+                formdata.append('stuId', this.props.store.user.userId);
+                formdata.append('uploadId', options.data);
 
                 // let url = api.host + api.upload;
                 fetch(options.action, {
@@ -77,24 +117,26 @@ class Article extends React.Component {
                     body: formdata,
                 }).then((res) => {
                     res.json().then((data) => {
-                        console.log(data.code);
-                        if (data.code === 0)
+                        if (data.code === 0){
                             message.success("上传成功！");
+                        }
+                            
                     })
                 }).catch((err) => {
                     console.log(err)
                 })
             },
             onChange(info) {
-                console.log(info.file.status);
-                if (info.file.status !== 'uploading') {
-                    console.log(info.file, info.fileList);
-                }
-                if (info.file.status === 'done') {
-                    message.success(`${info.file.name} 上传成功！`);
-                } else if (info.file.status === 'error') {
-                    message.error(`${info.file.name} 上传失败`);
-                }
+                info.file.status = "done";
+                // console.log(info.file.status);
+                // if (info.file.status !== 'uploading') {
+                //     console.log(info.file, info.fileList);
+                // }
+                // if (info.file.status === 'done') {
+                //     message.success(`${info.file.name} 上传成功！`);
+                // } else if (info.file.status === 'error') {
+                //     message.error(`${info.file.name} 上传失败`);
+                // }
             }
         };
         return (
@@ -109,34 +151,92 @@ class Article extends React.Component {
                         <Tag color="#f50">
                             结束时间:{this.state.endTime}
                         </Tag>
+                        <Tag color="#2db7f5">
+                            活动类型:{this.state.type}
+                        </Tag>
                     </strong>
                     <br /><br />
                     <Paragraph >
                         {this.state.content}
-                        
                     </Paragraph>
-                    <a>2019-2020加州大学欧文分校学期访学研修项目通知（本科）.docx</a>
                     <br/>
-                    <a>2019-2020美国加州大学欧文分校【本科】学期访学学分项目介绍.doc</a>
-                    <br/>
-                    <a>2019-2020美国加州大学欧文分校【本科】学期访学学分项目报名表.doc</a>
-                    <br/>
-                    <br/>
-                    <Upload {...UploadProps}>
-                        <Button>
-                        <Icon type="upload" />上传附件
-                        
-                    </Button><br/><br/>
-                    <Tag color="#87d068"> 上传要求</Tag>
-                    cpp/doc/docx/ppt/pptx
-                    </Upload>
-                    {/* <Tag>上传类型：</Tag>cpp/doc/docx/ppt/pptx */}
-                    <br/>
-                    <Questionnair/>
+                    <Row gutter={[8,8]}>
+                    {
+                        this.state.questionList.length !== 0 ? (
+                        <Col span={12}>
+                        <Card title="请回答以下问题...">
+                        {this.state.questionList.map((question,index) =>{
+                            let newanswer =  this.state.answer;
+                            newanswer[index] = {
+                                queId:question.id,
+                                ansContent: newanswer[index] ? newanswer[index].ansContent:'',
+                            };
+                            return (
+                                <Row gutter={[8,8]}>
+                                <Col span={24}>
+                                <div>{question.content}</div>
+                                </Col>
+                                <Col span={24}>
+                                <Input value={newanswer[index].ansContent} onChange={({ target: { value } })=>{
+                                    newanswer[index] = {
+                                        ansContent:value,
+                                    };
+                                    this.setState({
+                                        answer: newanswer,
+                                    })
+                                }}/>
+                                </Col>
+                                </Row>
+                            )
+                        })
+                        }
+                        </Card>
+                        </Col>):""
+                    }
+                    {   this.state.fileList.length !== 0 ? (
+                    <Col span={12}>
+                        <Card title="附件列表">{
+                        this.state.fileList.map((file)=>{
+                            return (<a href={api.host+api.getProjFile+"?fileId="+file.id}>{file.name}</a>);
+                        })}
+                        </Card>
+                    </Col>
+                    ):""
+                    }
+                    {this.state.uploadDetail.length !== 0 ?(
+                        <Col span={12}>
+                            <Card title="上传文件">{
+                                this.state.uploadDetail.map((file)=>{
+                                    const demands = (
+                                        <div>
+                                            <p>类型限制:{file.typeLimit}</p>
+                                            <p>大小限制:{file.sizeLimit}</p>
+                                            <p>Deadline:{file.timeLimit}</p>
+                                        </div>
+                                    )
+                                    return(
+                                        <div style={{margin:"10px"}}>
+                                        文件{file.id+1}：
+                                        <Tag color="#87d068">{file.name}</Tag>
+                                        <Divider type="vertical "/>
+                                        <Upload {...UploadProps} data={file.id}>
+                                        <Popover content={demands} title="上传要求"><Button><Icon type="upload" />上传附件</Button></Popover>
+                                        </Upload>
+                                    </div>
+                                    )
+                                })
+                            }
+                            </Card>
+                        </Col>):""}
+                    </Row>
+                    <div style={{margin:"10px"}}>
+                    本次素拓分
+                    <InputNumber min={0} max={100} defaultValue={61} onChange={this.handleScore} />
+                    </div>
                     <br/>
                     <Row gutter={[16,16]}>
                         <Col span={2} >
-                        <Button icon="diff" type="primary">
+                        <Button icon="diff" type="primary" onClick={this.submit}>
                             确定提交
                         </Button>
                         </Col>
@@ -146,4 +246,4 @@ class Article extends React.Component {
         );
     }
 }
-export default Article;
+export default withRouter(Article);

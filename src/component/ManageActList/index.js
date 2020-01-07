@@ -23,7 +23,7 @@ class ManageActList extends React.Component {
       loading : true,
       // stuId : this.context.userId,
       stuId:this.props.store.user.userId,
-      actList:[],
+      ManList:[],
       modalVisable:false,
     }
   }
@@ -38,11 +38,10 @@ class ManageActList extends React.Component {
           method: 'GET', // or 'PUT'
         }).then(
           res=>{
-            // console.log(res.json());
             res.json().then(data=>{
                 // console.log(data.obj.actList);
                 this.setState({
-                  actList:data.obj.actList,
+                  ManList:data.obj.ManList,
                   loading:false,
                 })
             })
@@ -51,7 +50,7 @@ class ManageActList extends React.Component {
             err=>{
                 message.warning("网络连接异常，信息获取失败！");
             }
-        );
+     );
   }
 
   render() {
@@ -59,16 +58,16 @@ class ManageActList extends React.Component {
       <div>
       <AddAct visible={true}/>
         {
-          this.state.actList.map(card => {
+          this.state.ManList.map(card => {
             return (
               <Card
               // style={{margin:'10px'}}
-              title={card.Title}
-              key={card.proj_id}
+              title={card.title}
+              key={card.projId}
               hoverable={true}
               // loading={this.state.loading}
               extra={
-                <MyModal type="form" text="后台信息" id={card.proj_id}/>
+                <MyModal type="form" text="后台信息" id={card.projId}/>
               }
               >
                 <div>
@@ -76,10 +75,10 @@ class ManageActList extends React.Component {
                     <Col span={22}>
                     <strong>
                     <Tag color="#87d068">
-                      创建者:{card.Creator}
+                      创建者:{card.creator}
                     </Tag>
                     <Tag color="#f50">
-                      结束时间:{card.Endtime}
+                      结束时间:{card.endTime}
                     </Tag>
                     </strong>
                     </Col>

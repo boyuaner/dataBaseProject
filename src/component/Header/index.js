@@ -36,7 +36,7 @@ class MySidebar extends React.Component {
       console.log(selectedKeys);
     }
     handleTokenClick = (e) => {
-      let url = api.host+api.joinAct+"?actToken="+this.state.actToken;
+      let url = api.host+api.joinAct+"?projToken="+this.state.actToken+"&stuId="+this.state.stuId;
       fetch(url,{
         method: 'GET',
       }).then(
@@ -46,8 +46,10 @@ class MySidebar extends React.Component {
               console.log(data.code);
               if(data.code === 0){
                 message.success("加入成功！");
+              }else if(data.code === -1){
+                message.error("加入失败！无权限加入");
               }else {
-                message.error("加入失败！请检查您的输入");
+                message.error("加入失败！")
               }
             }
           )

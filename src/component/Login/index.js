@@ -43,7 +43,7 @@ class NormalLoginForm extends React.Component {
                     name : data.obj.name,
                 })
                   // this.props.store.updateUserId(values.stuId);
-                  this.props.history.replace('/');
+                  this.props.history.replace('/main');
                   message.success("登录成功!");
 
                 }else {

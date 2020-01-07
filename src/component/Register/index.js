@@ -33,7 +33,7 @@ class Login extends React.Component {
                       name : data.obj.name,
                   })
                     // this.props.store.updateUserId(values.stuId);
-                    this.props.history.replace('/');
+                    this.props.history.replace('/main');
                     message.success("注册成功!");
 
                   }else {
@@ -47,7 +47,6 @@ class Login extends React.Component {
         //   alert("注册失败"),
           error => {
               console.error('Error:', error);
-              this.props.history.push('/main');
             }
           );
         }

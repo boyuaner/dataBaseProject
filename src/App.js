@@ -20,7 +20,7 @@ export default class App extends React.Component {
          <Provider {...store}>
           <Router history={history}>
             <Switch>
-              <Route exact path="/" component={MainPage} />
+              <Route exact path="/main" component={MainPage} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/forget" component={Register} />

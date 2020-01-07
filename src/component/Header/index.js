@@ -45,10 +45,9 @@ class MySidebar extends React.Component {
             data=>{
               if(data.code === 0){
                 message.success("加入成功！");
-                // this.props.store.updateUser({
-                //   ...this.props.store.user,
-                //   refreshMyList:true,
-                // });
+                this.setState({
+                  actToken:''
+                })
               }else if(data.code === -1){
                 message.error("加入失败！无权限加入");
               }else {

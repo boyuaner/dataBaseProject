@@ -23,7 +23,8 @@ export default class App extends React.Component {
               <Route exact path="/" component={MainPage} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
-              <Redirect from='' to="/" />
+              <Route exact path="/forget" component={Register} />
+              <Redirect from='' to="/login" />
             </Switch>
           </Router>
         </Provider>

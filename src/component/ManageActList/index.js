@@ -30,7 +30,7 @@ class ManageActList extends React.Component {
 
   
   componentDidMount(){
-    const url = api.host + api.actList + "?stuId=" +this.state.stuId;
+    const url = api.host + api.ManList + "?stuId=" +this.state.stuId;
     fetch(url, {
         headers:new Headers({
         'Content-Type': 'application/json',
@@ -79,6 +79,9 @@ class ManageActList extends React.Component {
                     </Tag>
                     <Tag color="#f50">
                       结束时间:{card.endTime}
+                    </Tag>
+                    <Tag color="#2db7f5">
+                      活动类型:{card.type}
                     </Tag>
                     </strong>
                     </Col>

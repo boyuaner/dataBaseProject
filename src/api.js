@@ -14,4 +14,8 @@ module.exports = {
     answer:"/ansQue",
     getParterDetail:"/getParterDetail",
     scoreEveryOne:"/addScoreArray",
+    addScore:"/addScore",
+    ManList:"/ManList",
+    token:"/gettoken",
+    updateMe:"/updateMe",
 }

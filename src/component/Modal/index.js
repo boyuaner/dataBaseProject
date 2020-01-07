@@ -1,8 +1,9 @@
-import { Modal, Button ,Col,Row,Form,Input,Divider} from 'antd';
+import { Modal, Button ,message,Col,Row,Form,Input,Divider} from 'antd';
 import React from "react";
 import Article from "../Article";
 import {withRouter} from "react-router-dom"
 import ManageForm from "../ManageForm"
+import api from "../../api"
 const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
 class MyModal extends React.Component {
     constructor(props){
@@ -11,6 +12,7 @@ class MyModal extends React.Component {
             visible: false,
             id:this.props.id,
             type:this.props.type,
+            tokenGetting:false,
         };
     }
   showModal = () => {
@@ -32,6 +34,44 @@ class MyModal extends React.Component {
       visible: false,
     });
   };
+  getToken =()=>{
+    this.setState({
+      tokenGetting:true
+    });
+    const url = api.host + api.token ;
+    fetch(url, {
+        headers:new Headers({
+        'Content-Type': 'application/json',
+          }),
+          method: 'POST', // or 'PUT'
+          body:JSON.stringify({
+            projId:this.state.id,
+          })
+        }).then(
+          res=>{
+            res.json().then(data=>{
+                // console.log(data.obj.actList);
+                if(data.code === 0){
+                  this.setState({
+                    tokenGetting:false,
+                  });
+                  Modal.info({
+                    title:'Token',
+                    content:data.obj.token,
+                  })
+                }
+                
+                else {
+                  message.error("获取失败！请检查权限")
+                }
+            })
+          }
+        ).catch(
+            err=>{
+                message.warning("网络连接异常，信息获取失败！");
+            }
+     );
+  }
   handleClick = (card)=>{
     // console.log(card);
     this.props.history.push("/manageAct/"+this.state.id);
@@ -54,6 +94,10 @@ class MyModal extends React.Component {
 
     return (
       <div>
+        <Button span={2} type="primary" onClick={this.getToken} loading={this.state.tokenGetting}>
+          获取Token
+        </Button>
+        <Divider type="vertical"/>
         <Button span={2} type="primary" onClick={this.handleClick}>
           修改
         </Button>

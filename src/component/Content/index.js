@@ -10,8 +10,6 @@ class MyContent extends React.Component {
             <Content style={{ padding: '60px 50px'}} >
                 <Breadcrumb style={{ margin: '16px 16px' }}>
                     <Breadcrumb.Item>Home</Breadcrumb.Item>
-                    <Breadcrumb.Item>我的活动</Breadcrumb.Item>
-                    <Breadcrumb.Item>活动1</Breadcrumb.Item>
                 </Breadcrumb>
                 <div style={{ background: '#fff',minHeight:280}}>{this.props.children}</div>
             </Content>

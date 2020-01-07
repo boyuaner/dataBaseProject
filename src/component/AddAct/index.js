@@ -303,7 +303,6 @@ class CollectionsPage extends React.Component {
                   }else if(data.code === 1){
                     message.warning("无权限！");
                   }
-                  console.log(data.obj.token)
               })
             }
           ).catch(

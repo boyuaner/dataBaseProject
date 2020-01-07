@@ -36,16 +36,19 @@ class MySidebar extends React.Component {
       console.log(selectedKeys);
     }
     handleTokenClick = (e) => {
-      let url = api.host+api.joinAct+"?projToken="+this.state.actToken+"&stuId="+this.state.stuId;
+      let url = api.host+api.joinAct+"?projToken="+this.state.actToken+"&stuId="+this.props.store.user.userId;
       fetch(url,{
         method: 'GET',
       }).then(
         res=>{
           res.json().then(
             data=>{
-              console.log(data.code);
               if(data.code === 0){
                 message.success("加入成功！");
+                // this.props.store.updateUser({
+                //   ...this.props.store.user,
+                //   refreshMyList:true,
+                // });
               }else if(data.code === -1){
                 message.error("加入失败！无权限加入");
               }else {
@@ -65,7 +68,7 @@ class MySidebar extends React.Component {
               title={
                 <span className="submenu-title-wrapper">
                   <Icon type="setting" />
-                  {this.props.store.user.name}
+                  {this.props.store.user.userId}
                 </span>
               }
             >

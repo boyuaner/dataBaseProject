@@ -1,9 +1,10 @@
 import React from "react"
-import {  Row,Col,Button,Upload, Icon, Tag, message, Typography,Divider,Card,Popover,Input,InputNumber } from "antd"
+import { Select,Row,Col,Button,Upload, Icon, Tag, message, Typography,Divider,Card,Popover,Input,InputNumber } from "antd"
 import {observer,inject} from "mobx-react"
 import {withRouter} from "react-router-dom"
 import api from "../../api"
 const { Title, Paragraph } = Typography;
+const { Option } = Select;
 @inject("store")
 @observer
 class Article extends React.Component {
@@ -22,7 +23,8 @@ class Article extends React.Component {
             questionList: [],
             questionnaire:'',
             answer:[],
-            score:'',
+            score:'61',
+            awardName:''
         }
     }
     componentDidMount() {
@@ -65,39 +67,49 @@ class Article extends React.Component {
             content:str,
         })
     }
-    hadleScore = (value)=>{
-        this.setState({
-            score:value,
-        })
-    }
     submit = ()=>{
-        let url = api.host+api.answer;
+        let url1 = api.host+api.answer;
         let myvalues = {
             stuId:this.props.store.user.userId,
             projId:this.state.id,
             ans:this.state.answer,
         }
-        Promise.race([fetch(url, {
+        let url2 = api.host + api.addScore;
+        const myvalues2={
+            partnerId:this.props.store.user.userId,
+            projId:this.state.id,
+            awardName:this.state.awardName,
+            score:this.state.score,
+        }
+        Promise.race([fetch(url1, {
             headers:new Headers({
             'Content-Type': 'application/json',
             }),
             method: 'POST', // or 'PUT',
             body: JSON.stringify(myvalues)
-          }).then(
-            res=>{
-              res.json().then(data=>{
-                  if(data.code === 0){
-                    message.success("提交成功！");
-                  }else if(data.code === -1){
-                    message.warning("提交失败！");
-                  }
-              })
+          }),
+        fetch(url2, {
+        headers:new Headers({
+        'Content-Type': 'application/json',
+        }),
+        method: 'POST', // or 'PUT',
+        body: JSON.stringify(myvalues2)
+      })
+    ]).then(
+        res=>{
+          res.json().then(data=>{
+              if(data.code === 0){
+                message.success("提交成功！");
+              }else if(data.code === -1){
+                message.warning("提交失败！");
+              }
+          })
+        }
+      ).catch(
+        err=>{
+            message.warning("网络连接异常，信息获取失败！");
             }
-          ).catch(
-            err=>{
-                message.warning("网络连接异常，信息获取失败！");
-            }
-       )]);
+        );
     }
     render() {
         const UploadProps = {
@@ -118,25 +130,28 @@ class Article extends React.Component {
                 }).then((res) => {
                     res.json().then((data) => {
                         if (data.code === 0){
-                            message.success("上传成功！");
+                            options.onSuccess(null, options.file);
                         }
-                            
                     })
                 }).catch((err) => {
-                    console.log(err)
+                    options.onError(err,null,options.file)
                 })
             },
             onChange(info) {
-                info.file.status = "done";
-                // console.log(info.file.status);
-                // if (info.file.status !== 'uploading') {
-                //     console.log(info.file, info.fileList);
-                // }
-                // if (info.file.status === 'done') {
-                //     message.success(`${info.file.name} 上传成功！`);
-                // } else if (info.file.status === 'error') {
-                //     message.error(`${info.file.name} 上传失败`);
-                // }
+                // const reader = new FileReader();
+                // reader.onloadend = (obj) => {
+                // this.imageDataAsURL = obj.srcElement.result;
+                // };
+                // reader.readAsDataURL(info.file.originFileObj);
+                console.log(info.file.status);
+                if (info.file.status !== 'uploading') {
+                    console.log(info.file, info.fileList);
+                }
+                if (info.file.status === 'done') {
+                    message.success(`${info.file.name} 上传成功！`);
+                } else if (info.file.status === 'error') {
+                    message.error(`${info.file.name} 上传失败`);
+                }
             }
         };
         return (
@@ -172,7 +187,7 @@ class Article extends React.Component {
                                 ansContent: newanswer[index] ? newanswer[index].ansContent:'',
                             };
                             return (
-                                <Row gutter={[8,8]}>
+                                <Row gutter={[8,8]} key={index}>
                                 <Col span={24}>
                                 <div>{question.content}</div>
                                 </Col>
@@ -197,7 +212,11 @@ class Article extends React.Component {
                     <Col span={12}>
                         <Card title="附件列表">{
                         this.state.fileList.map((file)=>{
-                            return (<a href={api.host+api.getProjFile+"?fileId="+file.id}>{file.name}</a>);
+                            return (
+                                <Col span={24}>
+                                    <a href={api.host+api.getProjFile+"?fileId="+file.id}>{file.name}</a>
+                                </Col>
+                            );
                         })}
                         </Card>
                     </Col>
@@ -215,24 +234,46 @@ class Article extends React.Component {
                                         </div>
                                     )
                                     return(
-                                        <div style={{margin:"10px"}}>
+                                        <Col span={24}>
                                         文件{file.id+1}：
                                         <Tag color="#87d068">{file.name}</Tag>
                                         <Divider type="vertical "/>
                                         <Upload {...UploadProps} data={file.id}>
                                         <Popover content={demands} title="上传要求"><Button><Icon type="upload" />上传附件</Button></Popover>
                                         </Upload>
-                                    </div>
+                                        </Col>
                                     )
                                 })
                             }
                             </Card>
                         </Col>):""}
-                    </Row>
-                    <div style={{margin:"10px"}}>
-                    本次素拓分
-                    <InputNumber min={0} max={100} defaultValue={61} onChange={this.handleScore} />
-                    </div>
+                        <Col span={6}>
+                            <Card title="活动结果">
+                                <Col span={12}>
+                                奖项：
+                                <Select style={{ width: 120 }}onChange={(value)=>{
+                                    this.setState({
+                                        awardName:value,
+                                    })
+                                }}>
+                                    <Option value="firstPrize">一等奖</Option>
+                                    <Option value="secondPrize">二等奖</Option>
+                                    <Option value="thirdPrize">三等奖</Option>
+                                    <Option value="SuccessPrize">优秀奖</Option>
+                                </Select>
+                                </Col>
+                            <Col span={12}>
+                                本次素拓分
+                                <InputNumber min={0} max={100} defaultValue={61} onChange={(value)=>{
+                                    console.log(value);
+                                    this.setState({
+                                        score:value,
+                                    })
+                                }} />
+                            </Col>
+                            </Card>
+                        </Col>
+                    </Row>  
                     <br/>
                     <Row gutter={[16,16]}>
                         <Col span={2} >

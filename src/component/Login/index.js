@@ -37,6 +37,7 @@ class NormalLoginForm extends React.Component {
             response.json().then(data =>{
                 if(data.code === 0){
                   this.props.store.updateUser ({
+                    refreshMyList:false,
                     manager : data.obj.isManager === 1 ? true : false,
                     userId: values.stuId,
                     name : data.obj.name,

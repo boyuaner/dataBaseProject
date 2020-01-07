@@ -6,10 +6,15 @@ export default class UserInfoStore {
         name:'',
         manager:false,
         userPhoneNum:'',
+        refreshMyList:false,
     };
     @computed 
     get userId(){
         return this.user.userId;
+    }
+    @computed 
+    get refreshMyList(){
+        return this.user.refreshMyList;
     }
     @computed 
     get name(){
@@ -22,6 +27,10 @@ export default class UserInfoStore {
     @action 
     updateUser(user){
         this.user = user;
+    }
+    @action 
+    updateMyList(fresh){
+        this.user.refreshMyList = fresh;
     }
     @action
     updateUserId(userId){

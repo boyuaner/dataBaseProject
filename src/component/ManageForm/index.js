@@ -1,5 +1,6 @@
 import { Table, Input, Button, Popconfirm, Form,Rate,message } from 'antd';
 import React from 'react';
+import api from "../../api";
 const EditableContext = React.createContext();
 
 const EditableRow = ({ form, index, ...props }) => (
@@ -92,21 +93,27 @@ class EditableTable extends React.Component {
     const desc = ['terrible','terrible', 'bad','bad', 'not so bad', 'just soso',  'normal','normal', 'good','good', 'wonderful'];
     this.columns = [
       {
+        title: '学号',
+        dataIndex: 'stuId',
+        width: '20%',
+        editable: false,
+      },
+      {
         title: '姓名',
         dataIndex: 'name',
-        width: '30%',
+        width: '20%',
         editable: false,
       },
       {
         title: '奖项名',
-        dataIndex: 'awards',
-        width: '30%',
+        dataIndex: 'awardName',
+        width: '20%',
         editable: true,
       },
       {
         title: '分数',
-        dataIndex: 'rate',
-        width: '30%',
+        dataIndex: 'score',
+        width: '20%',
         editable: true,
       },
       // {
@@ -129,41 +136,54 @@ class EditableTable extends React.Component {
     ];
 
     this.state = {
+      projId : this.props.id,
       dataSource: [
         {
           key: '0',
           name: '王锟',
           rate: 3 ,
           awards:'最具商业价值奖',
+          stuId:'1123123123'
         },
         {
           key: '1',
           name: '尹永琪',
           rate: 5,
           awards:'没奖',
+          stuId:'1123123123'
         },
       ],
       count: 2,
     };
   }
-  handleDelete = key => {
-    const dataSource = [...this.state.dataSource];
-    this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
-  };
+  componentDidMount(){
+    const url = api.host + api.getParterDetail + "?projId=" + this.props.id;
+    fetch(url, {
+        headers:new Headers({
+        'Content-Type': 'application/json',
+          }),
+          method: 'GET', // or 'PUT'
+        }).then(
+          res=>{
+            res.json().then(data=>{
+                // console.log(data.obj.actList);
 
-  handleAdd = () => {
-    const { count, dataSource } = this.state;
-    const newData = {
-      key: count,
-      name: `Edward King ${count}`,
-      rate: 2,
-      address: `London, Park Lane no. ${count}`,
-    };
-    this.setState({
-      dataSource: [...dataSource, newData],
-      count: count + 1,
-    });
-  };
+                let newSource = data.obj.list;
+                for(let i = 0;i < this.state.dataSource.length-1;i++){
+                  newSource[i] = {
+                    ...newSource[i],
+                    key:i,
+                  }
+                }
+                this.setState({dataSource:newSource})
+            })
+          }
+        ).catch(
+            err=>{
+              message.warning("网络连接异常，人员信息获取失败！");
+            }
+     );
+  }
 
   handleSave = row => {
     const newData = [...this.state.dataSource];
@@ -174,10 +194,34 @@ class EditableTable extends React.Component {
       ...row,
     });
     this.setState({ dataSource: newData });
+    const url = api.host + api.scoreEveryOne ;
+    fetch(url, {
+        headers:new Headers({
+        'Content-Type': 'application/json',
+          }),
+          method: 'POST', // or 'PUT'
+          body:JSON.stringify({
+            ScoreArray:this.state.dataSource,
+            projId:this.state.projId,
+          })
+        }).then(
+          res=>{
+            res.json().then(data=>{
+                // console.log(data.obj.actList);
+                if(data.code === 0){
+                  message.success("修改成功")
+              }else{
+                message.error("修改失败")
+              }
+            })
+          }
+        ).catch(
+            err=>{
+              console.log(err)
+              message.warning("网络连接异常，人员信息修改失败！");
+            }
+     );
   };
-  handleDowload = (e)=>{
-    message.success("下载成功！")
-  }
   render() {
     const { dataSource } = this.state;
     const components = {
@@ -203,8 +247,8 @@ class EditableTable extends React.Component {
     });
     return (
       <div>
-        <Button onClick={this.handleDowload} type="primary" style={{ marginBottom: 16 }}>
-          附件下载
+        <Button type="primary" style={{ marginBottom: 16 }}>
+          <a href={api.host+api.manageFile+"?projId="+this.state.projId}>附件下载</a>
         </Button>
         <Table
           components={components}

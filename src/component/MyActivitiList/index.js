@@ -14,7 +14,6 @@ class MyActivitiList extends React.Component {
   // static propTypes = {
   //   cookies: instanceOf(Cookies).isRequired
   // };
-  static contextType = globalContext;
   constructor(props) {
     super(props);
     // const {cookies} = this.props;
@@ -26,6 +25,9 @@ class MyActivitiList extends React.Component {
     }
   }
   componentDidMount(){
+    this.getData();
+  }
+  getData=()=>{
     const url = api.host + api.actList + "?stuId=" +this.state.stuId;
     fetch(url, {
         headers:new Headers({
@@ -36,11 +38,14 @@ class MyActivitiList extends React.Component {
           res=>{
             // console.log(res.json());
             res.json().then(data=>{
-                // console.log(data.obj.actList);
-                this.setState({
-                  projList:data.obj.projList,
-                  loading:false,
-                })
+                console.log(data);
+                if(data.code === 0){
+                  this.setState({
+                    projList:data.obj.projList? data.obj.projList:[],
+                    loading:false,
+                  })
+                }
+                
             })
           }
         ).catch(
@@ -54,12 +59,20 @@ class MyActivitiList extends React.Component {
     this.props.history.push("/actDetail/"+card.projId);
   }
   render() {
-
-
+    // setInterval(() => {
+    //   if(this.props.store.user.refreshMyList){
+    //       this.getData();
+    //       this.props.store.updateUser({
+    //         ...this.props.store.user,
+    //         refreshMyList:false,
+    //       });
+    //     }
+    //     console.log(this.props.store.user.refreshMyList);
+    //   },3000);
     return (
       <div>
         {
-          this.state.projList.map(card => {
+          this.state.projList? this.state.projList.map(card => {
             return (
               <Card
               // style={{margin:'10px'}}
@@ -97,7 +110,7 @@ class MyActivitiList extends React.Component {
                 </div>
               </Card>
             );
-          })
+          }):""
         }
       </div>
     );

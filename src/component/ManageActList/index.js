@@ -56,9 +56,9 @@ class ManageActList extends React.Component {
   render() {
     return (
       <div>
-      <AddAct visible={true}/>
+      <AddAct/>
         {
-          this.state.ManList.map(card => {
+          this.state.ManList? this.state.ManList.map(card => {
             return (
               <Card
               // style={{margin:'10px'}}
@@ -89,7 +89,7 @@ class ManageActList extends React.Component {
                 </div>
               </Card>
             );
-          })
+          }):""
         }
       </div>
     );

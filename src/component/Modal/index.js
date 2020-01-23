@@ -1,4 +1,5 @@
 import { Modal, Button ,message,Col,Row,Form,Input,Divider} from 'antd';
+import copy from "copy-to-clipboard"
 import React from "react";
 import Article from "../Article";
 import {withRouter} from "react-router-dom"
@@ -55,6 +56,8 @@ class MyModal extends React.Component {
                   this.setState({
                     tokenGetting:false,
                   });
+                  copy(data.obj.token);
+                  message.success("已复制到剪贴板！")
                   Modal.info({
                     title:'Token',
                     content:data.obj.token,

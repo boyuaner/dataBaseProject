@@ -40,10 +40,13 @@ class ManageActList extends React.Component {
           res=>{
             res.json().then(data=>{
                 // console.log(data.obj.actList);
-                this.setState({
-                  ManList:data.obj.ManList,
-                  loading:false,
-                })
+                if(data.code === 0){
+                  this.setState({
+                    ManList:data.obj.ManList?data.obj.ManList:"",
+                    loading:false,
+                  })
+                }
+                
             })
           }
         ).catch(

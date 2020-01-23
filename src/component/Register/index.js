@@ -59,18 +59,18 @@ class Login extends React.Component {
     const {getFieldValue} = this.props.form;
     return (
       <div>
-      <img style={{"position":"absolute","height":"1269px","width":"2558px"}} src="/background.png" alt=""/>
-      <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+      <img style={{"position":"absolute","height":"1269px","width":"2558px"}} src="/background.jpg" alt=""/>
+      <br/><br/><br/><br/><br/><br/><br/><br/><br/>
       <Row>
-        <Col span={10} offset={11}>
+        <Col span={10} offset={10}>
         <Form onSubmit={this.handleSubmit} className="login-form">
-          <Row>
+          <Row gutter={[30,10]}>
             <Col span={24}>
             <Title >校园活动管理助手</Title >
             </Col>
             
             <Form.Item>
-            <Col span={6}>
+            <Col span={12}>
                 {getFieldDecorator('stuId', {
                   rules: [{ required: true, message: 'Please input your studentID!' }],
                 })(
@@ -83,7 +83,7 @@ class Login extends React.Component {
             </Form.Item>
             
             <Form.Item>
-            <Col span={6}>
+            <Col span={12}>
                 {getFieldDecorator('password', {
                   rules: [{ required: true, message: 'Please input your Password!' }],
                 })(
@@ -96,7 +96,7 @@ class Login extends React.Component {
             </Col>
             </Form.Item>
             <Form.Item>
-              <Col span={6}>
+              <Col span={12}>
                   {getFieldDecorator('repeatPassword', {
                       rules: [
                         { required: true,message: '请再次输入新密码(6~20位数字、字母或下划线)'},
@@ -122,7 +122,7 @@ class Login extends React.Component {
               </Col>
             </Form.Item>
             <Form.Item>
-            <Col span={6}>
+            <Col span={12}>
               {getFieldDecorator('phoneNum', {
                   rules: [{ required: true, message: 'Input your phone number' }],
                 })(
@@ -133,12 +133,15 @@ class Login extends React.Component {
                 )}
             </Col>
             </Form.Item>
-              <Col span={6} >
+              <Col span={24} >
                   <Button onClick={this.handleSubmit} size="large" type="primary">
                   Register
                   </Button>    
                   <br/>
-                  <Link to="/login">Have an account? Login!</Link>
+                  
+              </Col>
+              <Col span={6}>
+              <Link to="/login">Have an account? Login!</Link>
               </Col>
           </Row>
         </Form>

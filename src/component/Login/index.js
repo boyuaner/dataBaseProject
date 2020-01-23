@@ -67,17 +67,17 @@ class NormalLoginForm extends React.Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <div>
-      <img style={{"position":"absolute","height":"1269px","width":"2558px"}} src="/background.png" alt=""/>
-      <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+      <img style={{"position":"absolute","height":"1269px","width":"2558px"}} src="/background.jpg" alt=""/>
+      <br/><br/><br/><br/><br/><br/><br/><br/><br/>
       <Row>
-        <Col span={9} offset={11}>
+        <Col span={9} offset={10}>
           <Form onSubmit={this.handleSubmit} className="login-form">
           <Row gutter={[30,10]}>
             <Col span={24}>
             <Title >校园活动管理助手</Title >
             </Col>
             <Form.Item>
-            <Col span={6} >
+            <Col span={12} >
                 {getFieldDecorator('stuId', {
                   rules: [{ required: true, message: 'Please input your studentID!' }],
                 })(
@@ -89,7 +89,7 @@ class NormalLoginForm extends React.Component {
             </Col>
             </Form.Item>
             <Form.Item>
-            <Col span={6} >
+            <Col span={12} >
                 {getFieldDecorator('password', {
                   rules: [{ required: true, message: 'Please input your Password!' }],
                 })(
@@ -121,7 +121,7 @@ class NormalLoginForm extends React.Component {
                   
               </Col>
               <br/>
-              <Col span={3}>Or  <Link to="/register">register now!</Link></Col>
+              <Col span={6}>Or  <Link to="/register">register now!</Link></Col>
               </Form.Item>
             
           </Row>

@@ -44,7 +44,7 @@ class MySidebar extends React.Component {
           res.json().then(
             data=>{
               if(data.code === 0){
-                message.success("加入成功！");
+                message.success("加入成功！请刷新显示！");
                 this.setState({
                   actToken:''
                 })
@@ -132,7 +132,7 @@ class MySidebar extends React.Component {
               style={{ lineHeight: '64px' }}
               onSelect={this.hadleSelect}
               >
-              <Menu.Item key="1" ><Link to="/myActivitiList">我的活动</Link></Menu.Item>
+              <Menu.Item key="1" ><Link to="/main">我的活动</Link></Menu.Item>
               {MenuUpRight}
             </Menu>
             </Col>

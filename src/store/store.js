@@ -1,4 +1,4 @@
-import {action, computed, observable} from 'mobx';
+import {action, computed, observable,decorate} from 'mobx';
 export default class UserInfoStore {
     @observable 
     user = {
@@ -24,7 +24,7 @@ export default class UserInfoStore {
     get manager(){
         return this.user.manager;
     }
-    @action 
+    //@action 
     updateUser(user){
         this.user = user;
     }
@@ -37,3 +37,6 @@ export default class UserInfoStore {
         this.user.userId = userId;
     }
 }
+decorate(UserInfoStore,{
+    updateUser : action,
+})

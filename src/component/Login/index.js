@@ -6,7 +6,6 @@ import { Typography } from 'antd';
 import "../../App.css"
 import api from "../../api"
 import '../../mock/mock';
-// import bkgimg from '../../../public/background.png'
 import {observer,inject} from "mobx-react"
 
 const { Title } = Typography;
@@ -14,6 +13,12 @@ const { Title } = Typography;
 @inject("store")
 @observer
 class NormalLoginForm extends React.Component {
+  componentDidMount(){
+    console.log(this.props.cookies)
+    if(this.props.cookies.get("id")){
+        this.props.history.push("/main");
+    }
+}
   state = {
     loading : false,
   }
@@ -36,6 +41,8 @@ class NormalLoginForm extends React.Component {
           response => {
             response.json().then(data =>{
                 if(data.code === 0){
+                  this.props.cookies.set("id",values.stuId,{path:'/'});
+                  this.props.cookies.set("pwd",values.password,{path:'/'});
                   this.props.store.updateUser ({
                     refreshMyList:false,
                     manager : data.obj.isManager === 1 ? true : false,
@@ -74,7 +81,7 @@ class NormalLoginForm extends React.Component {
           <Form onSubmit={this.handleSubmit} className="login-form">
           <Row gutter={[30,10]}>
             <Col span={24}>
-            <Title >校园活动管理助手</Title >
+              <Title >校园活动管理助手</Title >
             </Col>
             <Form.Item>
             <Col span={12} >

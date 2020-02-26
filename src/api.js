@@ -1,6 +1,7 @@
 module.exports = {
     host : "http://118.25.104.28:2018",
     login : "/login",
+    sendCookie:"/sendCookie",
     register : "/register",
     actDetail : "/projDetail",
     actList : "/ProjList",
